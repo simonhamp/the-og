@@ -2,7 +2,7 @@
 
 namespace SimonHamp\TheOg;
 
-enum ColorScheme: string
+enum Theme: string
 {
     case Light = 'light';
     case Dark = 'dark';

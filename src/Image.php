@@ -8,7 +8,7 @@ class Image
     protected string $title;
     protected string $description;
     protected Layout $layout;
-    protected ColorScheme $colorScheme;
+    protected Theme $theme;
     protected string $accentColor;
     protected Background $background;
     protected string $callToAction;
@@ -43,9 +43,9 @@ class Image
         return $this;
     }
     
-    public function colorScheme(ColorScheme $colorScheme): self
+    public function theme(Theme $theme): self
     {
-        $this->colorScheme = $colorScheme;
+        $this->theme = $theme;
         return $this;
     }
     
