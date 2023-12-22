@@ -7,7 +7,7 @@ class Image
     protected string $url;
     protected string $title;
     protected string $description;
-    protected Theme $theme;
+    protected Layout $layout;
     protected ColorScheme $colorScheme;
     protected string $accentColor;
     protected Background $background;
@@ -24,6 +24,12 @@ class Image
         $this->title = $title;
         return $this;
     }
+
+    public function image(string $image): self
+    {
+        $this->iamge = $image;
+        return $this;
+    }
     
     public function description(string $description): self
     {
@@ -31,9 +37,9 @@ class Image
         return $this;
     }
     
-    public function theme(Theme $theme): self
+    public function layout(Layout $layout): self
     {
-        $this->theme = $theme;
+        $this->layout = $layout;
         return $this;
     }
     
