@@ -2,16 +2,25 @@
 
 namespace SimonHamp\TheOg;
 
+use Intervention\Image\Encoders\PngEncoder;
+use SimonHamp\TheOg\Traits\RendersImages;
+
 class Image
 {
-    protected string $url;
-    protected string $title;
-    protected string $description;
-    protected Layout $layout;
-    protected Theme $theme;
+    use RendersImages;
+
     protected string $accentColor;
-    protected Background $background;
+    protected ?Background $background = null;
+    protected string $backgroundColor = '#ffffff';
+    protected ?Border $border = null;
     protected string $callToAction;
+    protected string $description;
+    protected int $height = 630;
+    protected Layout $layout = Layout::Standard;
+    protected Theme $theme = Theme::Light;
+    protected string $title;
+    protected ?string $url = null;
+    protected int $width = 1200;
 
     public function url(string $url): self
     {
@@ -51,6 +60,7 @@ class Image
     
     public function accentColor(string $hexCode): self
     {
+        // TODO: Make sure it's a valid hex code
         $this->accentColor = $hexCode;
         return $this;
     }
@@ -64,6 +74,43 @@ class Image
     public function callToAction(string $content): self
     {
         $this->callToAction = $content;
+        return $this;
+    }
+
+    public function width(int $width): self
+    {
+        $this->width = $width < 100 ? 100 : $width;
+        return $this;
+    }
+
+    public function height(int $height): self
+    {
+        $this->height = $height < 100 ? 100 : $height;
+        return $this;
+    }
+
+    public function backgroundColor(string $backgroundColor): self
+    {
+        // TODO: Make sure it's a valid hex code
+        $this->backgroundColor = $backgroundColor;
+        return $this;
+    }
+
+    public function border(int $width = 10, BorderPosition $position = BorderPosition::All): self
+    {
+        $this->border = (new Border())
+            ->width($width)
+            ->position($position);
+
+        return $this;
+    }
+
+    public function save(string $path, string $format = PngEncoder::class): self
+    {
+        $this->render()
+            ->encode(new $format)
+            ->save($path);
+
         return $this;
     }
 }
