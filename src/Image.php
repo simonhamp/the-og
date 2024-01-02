@@ -12,6 +12,7 @@ class Image
     protected string $accentColor;
     protected ?Background $background = null;
     protected string $backgroundColor = '#ffffff';
+    protected float $backgroundOpacity = 1.0;
     protected ?Border $border = null;
     protected string $callToAction;
     protected string $description;
@@ -64,13 +65,14 @@ class Image
         $this->accentColor = $hexCode;
         return $this;
     }
-    
-    public function background(Background $background): self
+
+    public function background(Background $background, float $opacity = 1.0): self
     {
+        $this->backgroundOpacity = $opacity < 0 ? 0 : ($opacity > 1 ? 1 : $opacity);
         $this->background = $background;
         return $this;
     }
-    
+
     public function callToAction(string $content): self
     {
         $this->callToAction = $content;

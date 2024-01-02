@@ -2,6 +2,7 @@
 
 namespace SimonHamp\TheOg\Traits;
 
+use Imagick;
 use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Typography\FontFactory;
@@ -144,8 +145,14 @@ trait RendersImages
 
     protected function renderBackground(): void
     {
-        // How many iterations are needed to fill the width?
         $panel = $this->manager->read($this->background->path());
+
+        $imagick = $panel->core()->native();
+
+        $imagick->setImageVirtualPixelMethod(1);
+        $imagick->setImageAlphaChannel(Imagick::ALPHACHANNEL_ACTIVATE);
+
+        $imagick->evaluateImage(Imagick::EVALUATE_MULTIPLY, $this->backgroundOpacity, Imagick::CHANNEL_ALPHA);
 
         $width = $panel->width();
         $height = $panel->height();
