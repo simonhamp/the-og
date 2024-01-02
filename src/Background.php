@@ -5,7 +5,7 @@ namespace SimonHamp\TheOg;
 enum Background: string
 {
     case Bananas = 'bananas.webp';
-    case CloudyDay = 'cloud-day.png';
+    case CloudyDay = 'cloudy-day.png';
     case JustWaves = 'just-waves.webp';
 
     public function path(): string
