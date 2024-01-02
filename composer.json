@@ -3,6 +3,8 @@
     "description": "OpenGraph Image Generator for PHP",
     "type": "library",
     "require": {
+        "php": "^8.2",
+        "ext-imagick": "*",
         "intervention/image": "^3.1"
     },
     "license": "MIT",
