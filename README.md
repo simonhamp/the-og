@@ -17,28 +17,49 @@ Thank you 🙏
 
 ## Installation
 
-Coming soon!
-
-<!-- Install via Composer:
+Install via Composer:
 
 ```shell
 composer require simonhamp/the-og --with-all-dependencies
 ```
--->
 
 ## Usage
 
-Coming soon!
+Using The OG is really simple. Here's a basic example:
+
+```php
+use SimonHamp\TheOg\Image;
+use SimonHamp\TheOg\Background;
+
+(new Image())
+    ->accentColor('#cc0000')
+    ->border()
+    ->url('https://example.com/blog/some-blog-post-url')
+    ->title('Some blog post title that is quite big and quite long')
+    ->description('Some slightly smaller but potentially much longer subtext. It could be really long so we might need to trim it completely after many words')
+    ->background(Background::JustWaves, 0.2)
+    ->save(__DIR__.'/test.png');
+```
+
+And here's the image that generates:
+
+![](https://github.com/simonhamp/the-og/blob/main/tests/test.png)
+
+Full API documentation coming soon!
 
 ## Testing
 
-Coming soon!
+There's a basic test script in `tests/test.php`. You can execute this directly from the command line:
 
-We need tests! Can you help? Please consider contributing.
+```shell
+php tests/test.php
+```
+
+But a more robust test suite is needed and is coming.
 
 ## Contributing
 
-Coming soon!
+I'd really appreciate and welcome any PRs to help improve this package!
 
 <!-- Please see [CONTRIBUTING](CONTRIBUTING.md) for details. -->
 
