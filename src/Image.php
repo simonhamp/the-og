@@ -98,7 +98,7 @@ class Image
         return $this;
     }
 
-    public function border(int $width = 10, BorderPosition $position = BorderPosition::All): self
+    public function border(int $width = 20, BorderPosition $position = BorderPosition::All): self
     {
         $this->border = (new Border())
             ->width($width)
