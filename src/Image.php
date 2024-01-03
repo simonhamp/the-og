@@ -11,6 +11,7 @@ class Image
 
     protected string $accentColor;
     protected ?Background $background = null;
+    protected ?string $backgroundURL = null;
     protected string $backgroundColor = '#ffffff';
     protected float $backgroundOpacity = 1.0;
     protected ?Border $border = null;
@@ -70,6 +71,22 @@ class Image
     {
         $this->backgroundOpacity = $opacity < 0 ? 0 : ($opacity > 1 ? 1 : $opacity);
         $this->background = $background;
+        return $this;
+    }
+
+    public function backgroundURL(string $backgroundURL, float $opacity = 1.0): self
+    {
+        if (!filter_var($backgroundURL, FILTER_VALIDATE_URL)) {
+            throw new \InvalidArgumentException('URL is not valid');
+        }
+        
+        $imageInfo = @getimagesize($backgroundURL);
+        if (!$imageInfo) {
+            throw new \InvalidArgumentException('URL doesn\'t point to an image');
+        }
+
+        $this->backgroundOpacity = $opacity < 0 ? 0 : ($opacity > 1 ? 1 : $opacity);
+        $this->backgroundURL = $backgroundURL;
         return $this;
     }
 

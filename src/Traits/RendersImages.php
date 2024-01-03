@@ -178,4 +178,45 @@ trait RendersImages
             $filledRows++;
         }
     }
+
+    protected function renderBackgroundURL(): void
+    {
+        $panel = $this->manager->read(file_get_contents($this->backgroundURL));
+
+        $imagick = $panel->core()->native();
+
+        $imagick->setImageVirtualPixelMethod(1);
+        $imagick->setImageAlphaChannel(Imagick::ALPHACHANNEL_ACTIVATE);
+
+        $imagick->evaluateImage(Imagick::EVALUATE_MULTIPLY, $this->backgroundOpacity, Imagick::CHANNEL_ALPHA);
+
+        $width = $panel->width();
+        $height = $panel->height();
+    
+        $columns = ceil($this->width / $width);
+        $rows = ceil($this->height / $height);
+
+        $panel->resize($this->width, $this->height, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        });
+
+        $filledRows = 0;
+
+        while ($filledRows <= $rows) {
+            $filledColumns = 0;
+
+            while ($filledColumns <= $columns) {
+                $this->image->place(
+                    element: $panel,
+                    offset_x: $filledColumns * $width,
+                    offset_y: $filledRows * $height,
+                );
+
+                $filledColumns++;
+            }
+
+            $filledRows++;
+        }
+    }
 }
