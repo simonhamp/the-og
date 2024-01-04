@@ -45,7 +45,63 @@ And here's the image that generates:
 
 ![](https://github.com/simonhamp/the-og/blob/main/tests/test.png)
 
-Full API documentation coming soon!
+### Themes
+
+Themes set the colors, fonts, and styles for your image. There are currently 2 themes available: `Light` and `Dark`.
+The default theme is `Light`.
+
+You can set the theme on your image at any point before it's rendered:
+
+```php
+$image = new Image;
+$image->theme(Theme::Dark);
+```
+
+#### Creating themes
+
+Themes are simple classes. You can create your own theme simply by extending the `AbstractTheme` class:
+
+```php
+use SimonHamp\TheOg\Themes\AbstractTheme;
+
+$theme = new class(
+    accentColor: '#247BA0',
+    backgroundColor: '#ECEBE4',
+    baseColor: '#153B50',
+    baseFont: Font::InterBold,
+    callToActionBackgroundColor: '#153B50',
+    callToActionColor: '#ECEBE4',
+    descriptionColor: '#429EA6',
+    descriptionFont: Font::InterLight,
+    titleFont: Font::InterBlack,
+) extends AbstractTheme {};
+
+$image = new Image;
+$image->theme($theme);
+```
+
+Colors can be expressed as hex codes, rgba, or HTML named colors.
+
+Currently, there are currently 4 fonts available, all within the Inter family. More fonts are coming soon!
+
+#### Overriding theme settings
+
+You can override some theme settings, such as the accent color and background color, without having to create a whole
+new theme.
+
+```php
+$image = new Image;
+$image->backgroundColor('seagreen');
+```
+
+### Layouts
+
+While themes govern colors and styles, layouts govern sizing and positioning of your images and the elements within
+them.
+
+There are currently 2 layouts: `Standard` and `GitHubBasic`. `Standard` is the default.
+
+More layouts are coming.
 
 ## Testing
 
