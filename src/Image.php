@@ -61,7 +61,8 @@ class Image
     
     public function accentColor(string $hexCode): self
     {
-        // TODO: Make sure it's a valid hex code
+        $this->isValidHexColor($hexCode);
+
         $this->accentColor = $hexCode;
         return $this;
     }
@@ -93,7 +94,8 @@ class Image
 
     public function backgroundColor(string $backgroundColor): self
     {
-        // TODO: Make sure it's a valid hex code
+        $this->isValidHexColor($hexCode);
+        
         $this->backgroundColor = $backgroundColor;
         return $this;
     }
@@ -114,5 +116,12 @@ class Image
             ->save($path);
 
         return $this;
+    }
+
+    function isValidHexColor($hexCode): void
+    {
+        if(!preg_match('/^#[a-f0-9]{6}$/i', $hexCode)) {
+            throw new \InvalidArgumentException('Hex code is not valid');
+        }
     }
 }
