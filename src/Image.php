@@ -9,7 +9,7 @@ class Image
 {
     use RendersImages;
 
-    protected string $accentColor;
+    protected string $accentColor = '#000000';
     protected ?Background $background = null;
     protected ?string $backgroundURL = null;
     protected string $backgroundColor = '#ffffff';
