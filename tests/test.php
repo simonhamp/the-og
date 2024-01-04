@@ -26,6 +26,10 @@ include_once __DIR__.'/../vendor/autoload.php';
     ->accentColor('#cc0000')
     ->url('https://example.com/blog/some-blog-post-url')
     ->title('Some blog post title that is quite big and quite long')
-    ->description('Some slightly smaller but potentially much longer subtext. It could be really long so we might need to trim it completely after many words')
+    ->description(<<<'TEXT'
+        Some slightly smaller but potentially much longer subtext. It could be really long so we might need to trim it completely after many words.
+
+        Some slightly smaller but potentially much longer subtext. It could be really long so we might need to trim it completely after many words.
+        TEXT)
     ->background(Background::JustWaves, 0.2)
     ->save(__DIR__.'/test3.png');
