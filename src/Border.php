@@ -2,10 +2,24 @@
 
 namespace SimonHamp\TheOg;
 
+use Intervention\Image\Colors\Rgb\Color;
+
 class Border
 {
     protected BorderPosition $position;
-    protected int $width = 10;
+    protected int $width;
+    protected string $color;
+
+    public function color(Color $color): self
+    {
+        $this->color = $color;
+        return $this;
+    }
+
+    public function getColor(): Color
+    {
+        return Color::create($this->color);
+    }
     
     public function position(BorderPosition $position): self
     {
