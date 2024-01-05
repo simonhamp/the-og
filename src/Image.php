@@ -85,7 +85,7 @@ class Image
             throw new \InvalidArgumentException('URL doesn\'t point to an image');
         }
 
-        $this->backgroundOpacity = $opacity < 0 ? 0 : ($opacity > 1 ? 1 : $opacity);
+        $this->backgroundOpacity = max(0, min($opacity, 1));
         $this->backgroundURL = $backgroundURL;
         return $this;
     }
