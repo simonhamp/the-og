@@ -5,11 +5,11 @@ namespace SimonHamp\TheOg\Layout;
 use Intervention\Image\Geometry\Rectangle;
 use Intervention\Image\Colors\Rgb\Color;
 use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
-use Intervention\Image\Drivers\Imagick\Modifiers\TextModifier as ImagickTextModifier;
 use Intervention\Image\Modifiers\TextModifier;
 use Intervention\Image\Typography\FontFactory;
 use Intervention\Image\Typography\TextBlock;
 use SimonHamp\TheOg\Font;
+use SimonHamp\TheOg\Modifiers\TextModifier as CustomTextModifier;
 
 readonly class TextBox extends Box
 {
@@ -63,14 +63,14 @@ readonly class TextBox extends Box
         return $this;
     }
 
-    public function render(): ImagickTextModifier
+    public function render(): CustomTextModifier
     {
         return $this->ensureTextFitsBox($this->generateModifier($this->text));
     }
 
-    protected function generateModifier(string $text): ImagickTextModifier
+    protected function generateModifier(string $text): CustomTextModifier
     {
-        return new ImagickTextModifier(
+        return new CustomTextModifier(
             new TextModifier(
                 $text,
                 $this->calculatePosition(),
@@ -99,7 +99,7 @@ readonly class TextBox extends Box
         return $renderedBox->fitsInto($this->box);
     }
 
-    protected function getRenderedBoxForText(string $text, ImagickTextModifier $modifier): Rectangle
+    protected function getRenderedBoxForText(string $text, CustomTextModifier $modifier): Rectangle
     {
         return $modifier->boundingBox($this->getTextBlock($text));
     }
@@ -109,7 +109,7 @@ readonly class TextBox extends Box
         return new TextBlock($text);
     }
 
-    protected function ensureTextFitsBox(ImagickTextModifier $modifier): ImagickTextModifier
+    protected function ensureTextFitsBox(CustomTextModifier $modifier): CustomTextModifier
     {
         $text = $this->text;
         $renderedBox = $this->getRenderedBoxForText($text, $modifier);
