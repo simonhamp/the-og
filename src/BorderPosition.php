@@ -4,6 +4,7 @@ namespace SimonHamp\TheOg;
 
 enum BorderPosition: string
 {
+    case None = 'none';
     case All = 'all';
     case Bottom = 'bottom';
     case Left = 'left';

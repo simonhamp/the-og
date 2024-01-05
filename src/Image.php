@@ -2,126 +2,160 @@
 
 namespace SimonHamp\TheOg;
 
+use Intervention\Image\Image as RenderedImage;
+use Intervention\Image\Colors\Rgb\Color;
 use Intervention\Image\Encoders\PngEncoder;
-use SimonHamp\TheOg\Traits\RendersImages;
+use SimonHamp\TheOg\Interfaces\Layout;
+use SimonHamp\TheOg\Layout\Layouts;
+use SimonHamp\TheOg\Interfaces\Theme;
+use SimonHamp\TheOg\Themes\Themes;
 
 class Image
 {
-    use RendersImages;
+    public Layout $layout;
+    public Theme $theme;
 
-    protected string $accentColor = '#000000';
-    protected ?Background $background = null;
-    protected ?string $backgroundURL = null;
-    protected string $backgroundColor = '#ffffff';
-    protected float $backgroundOpacity = 1.0;
-    protected ?Border $border = null;
-    protected string $callToAction;
-    protected string $description;
-    protected int $height = 630;
-    protected Layout $layout = Layout::Standard;
-    protected Theme $theme = Theme::Light;
-    protected string $title;
-    protected ?string $url = null;
-    protected int $width = 1200;
+    public readonly string $callToAction;
+    public readonly string $description;
+    public readonly string $picture;
+    public readonly string $title;
+    public readonly string $url;
+    public readonly string $watermark;
 
-    public function url(string $url): self
+    public function __construct()
     {
-        $this->url = $url;
-        return $this;
-    }
-    
-    public function title(string $title): self
-    {
-        $this->title = $title;
-        return $this;
+        $this->layout(Layouts::Standard);
+        $this->theme(Themes::Light);
     }
 
-    public function image(string $image): self
-    {
-        $this->image = $image;
-        return $this;
-    }
-    
-    public function description(string $description): self
-    {
-        $this->description = $description;
-        return $this;
-    }
-    
-    public function layout(Layout $layout): self
-    {
-        $this->layout = $layout;
-        return $this;
-    }
-    
-    public function theme(Theme $theme): self
-    {
-        $this->theme = $theme;
-        return $this;
-    }
-    
-    public function accentColor(string $hexCode): self
-    {
-        // TODO: Make sure it's a valid hex code
-        $this->accentColor = $hexCode;
-        return $this;
-    }
-
-    public function background(Background $background, float $opacity = 1.0): self
-    {
-        $this->backgroundOpacity = $opacity < 0 ? 0 : ($opacity > 1 ? 1 : $opacity);
-        $this->background = $background;
-        return $this;
-    }
-
-    public function backgroundURL(string $backgroundURL, float $opacity = 1.0): self
-    {
-        if (!filter_var($backgroundURL, FILTER_VALIDATE_URL)) {
-            throw new \InvalidArgumentException('URL is not valid');
-        }
-        
-        $imageInfo = @getimagesize($backgroundURL);
-        if (!$imageInfo) {
-            throw new \InvalidArgumentException('URL doesn\'t point to an image');
-        }
-
-        $this->backgroundOpacity = max(0, min($opacity, 1));
-        $this->backgroundURL = $backgroundURL;
-        return $this;
-    }
-
+    /**
+     * The call to action text
+     */
     public function callToAction(string $content): self
     {
         $this->callToAction = $content;
         return $this;
     }
 
-    public function width(int $width): self
+    /**
+     * The description text
+     */
+    public function description(string $description): self
     {
-        $this->width = $width < 100 ? 100 : $width;
+        $this->description = $description;
         return $this;
     }
 
-    public function height(int $height): self
+    /**
+     * The picture to display
+     */
+    public function picture(string $picture): self
     {
-        $this->height = $height < 100 ? 100 : $height;
+        $this->picture = $picture;
         return $this;
     }
 
+    /**
+     * The title text
+     */
+    public function title(string $title): self
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * The URL
+     */
+    public function url(string $url): self
+    {
+        $this->url = $url;
+        return $this;
+    }
+
+    /**
+     * The watermark image
+     */
+    public function watermark(string $watermark, ?float $opacity = 1.0): self
+    {
+        $this->watermark = $watermark;
+        return $this;
+    }
+
+    /**
+     * The layout to use
+     */
+    public function layout(Layouts|Layout $layout): self
+    {
+        if ($layout instanceof Layouts) {
+            $this->layout = $layout->getLayout();
+        } else {
+            $this->layout = $layout;
+        }
+
+        return $this;
+    }
+
+    /**
+     * The theme to use
+     */
+    public function theme(Themes|Theme $theme): self
+    {
+        if ($theme instanceof Themes) {
+            $this->theme = $theme->getTheme();
+        } else {
+            $this->theme = $theme;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Override the theme's default accent color
+     */
+    public function accentColor(string $color): self
+    {
+        $this->theme->accentColor($color);
+        return $this;
+    }
+
+    /**
+     * Override the theme's default background
+     */
+    public function background(Background $background, ?float $opacity = 1.0): self
+    {
+        $this->theme->background($background);
+        $this->theme->backgroundOpacity($opacity);
+        return $this;
+    }
+
+    /**
+     * Override the theme's default background color
+     */
     public function backgroundColor(string $backgroundColor): self
     {
-        // TODO: Make sure it's a valid hex code
-        $this->backgroundColor = $backgroundColor;
+        $this->theme->backgroundColor($backgroundColor);
         return $this;
     }
 
-    public function border(int $width = 20, BorderPosition $position = BorderPosition::All): self
+    /**
+     * Override the layout's default border
+     */
+    public function border(?BorderPosition $position = null, ?Color $color = null, ?int $width = null): self
     {
-        $this->border = (new Border())
-            ->width($width)
-            ->position($position);
+        $this->layout->border(
+            (new Border())
+                ->position($position ?? $this->layout->getBorderPosition())
+                ->color($color ?? $this->theme->getBorderColor())
+                ->width($width ?? $this->layout->getBorderWidth())
+        );
 
         return $this;
+    }
+
+    public function render(): RenderedImage
+    {
+        return $this->layout->render($this);
     }
 
     public function save(string $path, string $format = PngEncoder::class): self

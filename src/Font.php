@@ -5,6 +5,7 @@ namespace SimonHamp\TheOg;
 enum Font: string
 {
     case Inter = 'Inter/static/Inter-Regular.ttf';
+    case InterBlack = 'Inter/static/Inter-Black.ttf';
     case InterBold = 'Inter/static/Inter-Bold.ttf';
     case InterLight = 'Inter/static/Inter-Light.ttf';
     
