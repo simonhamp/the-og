@@ -24,6 +24,10 @@ interface Theme
 
     public function getBackgroundOpacity(): float;
 
+    public function backgroundUrl(string $url): self;
+
+    public function getBackgroundUrl(): ?string;
+
     public function baseColor(string $color): self;
 
     public function getBaseColor(): Color;

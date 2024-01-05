@@ -15,6 +15,7 @@ abstract class AbstractTheme implements Theme
         protected string $baseColor,
         protected string $backgroundColor,
         protected ?Background $background = null,
+        protected ?string $backgroundUrl = null,
         protected ?float $backgroundOpacity = 1.0,
         protected ?string $borderColor = null,
         protected ?string $callToActionBackgroundColor = null,
@@ -53,6 +54,17 @@ abstract class AbstractTheme implements Theme
         return $this->background;
     }
 
+    public function backgroundUrl(string $url): self
+    {
+        $this->backgroundUrl = $url;
+        return $this;
+    }
+
+    public function getBackgroundUrl(): ?string
+    {
+        return $this->backgroundUrl;
+    }
+
     public function backgroundColor(string $color): self
     {
         $this->backgroundColor = $color;
@@ -66,7 +78,7 @@ abstract class AbstractTheme implements Theme
 
     public function backgroundOpacity(float $opacity): self
     {
-        $this->backgroundOpacity = $opacity < 0 ? 0 : ($opacity > 1 ? 1 : $opacity);
+        $this->backgroundOpacity = max(0, min($opacity, 1));
         return $this;
     }
 

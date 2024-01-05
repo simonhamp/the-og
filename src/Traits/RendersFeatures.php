@@ -18,7 +18,7 @@ trait RendersFeatures
     protected Config $config;
     protected Image $canvas;
     protected ImageManager $manager;
-    
+
     public function render(Config $config): Image
     {
         $this->config = $config;
@@ -39,6 +39,18 @@ trait RendersFeatures
 
         if ($this->config->theme->getBackground() instanceof Background) {
             $this->renderBackground();
+        }
+
+        if (isset($this->config->backgroundUrl) && $backgroundUrl = $this->getUrl($this->config->backgroundUrl)) {
+            if (!filter_var($this->config->backgroundUrl, FILTER_VALIDATE_URL)) {
+                throw new \InvalidArgumentException('URL is not valid');
+            }
+            $imageInfo = @getimagesize($this->config->backgroundUrl);
+            if (!$imageInfo) {
+                throw new \InvalidArgumentException('URL is not an image');
+            }
+
+            $this->renderBackgroundUrl();
         }
 
         if (isset($this->config->url) && $url = $this->getUrl($this->config->url)) {
@@ -177,5 +189,38 @@ trait RendersFeatures
 
             $filledRows++;
         }
+    }
+
+    /**
+     * Renders a background image URL across the canvas and resizes it to cover the canvas
+     */
+    protected function renderBackgroundUrl(): void
+    {
+        $panel = $this->manager->read(file_get_contents($this->config->backgroundUrl));
+
+        $imagick = $panel->core()->native();
+
+        $imagick->setImageVirtualPixelMethod(1);
+        $imagick->setImageAlphaChannel(Imagick::ALPHACHANNEL_ACTIVATE);
+
+        $imagick->evaluateImage(
+            Imagick::EVALUATE_MULTIPLY,
+            $this->config->theme->getBackgroundOpacity(),
+            Imagick::CHANNEL_ALPHA
+        );
+
+        $width = $panel->width();
+        $height = $panel->height();
+
+        $panel->resize($this->width, $this->height, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        });
+
+        $this->canvas->place(
+            element: $panel,
+            offset_x: 0,
+            offset_y: 0,
+        );
     }
 }
