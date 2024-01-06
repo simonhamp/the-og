@@ -2,21 +2,15 @@
 
 namespace Tests\Integration;
 
-use FilesystemIterator;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
 use SimonHamp\TheOg\Background;
 use SimonHamp\TheOg\Image;
 use SimonHamp\TheOg\Themes\Themes;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class ImageTest extends TestCase
+class ImageTest extends IntegrationTestCase
 {
     use MatchesSnapshots;
-
-    private const TESTCASE_DIRECTORY = __DIR__.'/../resources/testcases';
 
     #[DataProvider('snapshotImages')]
     public function test_basic_image(Image $image, string $name): void
@@ -26,20 +20,6 @@ class ImageTest extends TestCase
         $image->save($path);
 
         $this->assertMatchesImageSnapshot($path);
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        $files = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator(self::TESTCASE_DIRECTORY, FilesystemIterator::SKIP_DOTS),
-            RecursiveIteratorIterator::CHILD_FIRST,
-        );
-
-        foreach ($files as $file) {
-            unlink($file->getRealPath());
-        }
     }
 
     public static function snapshotImages()
