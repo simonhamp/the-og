@@ -22,7 +22,7 @@ class ImageTest extends IntegrationTestCase
         $this->assertMatchesImageSnapshot($path);
     }
 
-    public static function snapshotImages()
+    public static function snapshotImages(): iterable
     {
         yield 'basic' => [
             (new Image())
