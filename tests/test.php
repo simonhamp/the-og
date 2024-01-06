@@ -1,7 +1,7 @@
 <?php
 
+use SimonHamp\TheOg\Backgrounds\JustWaves;
 use SimonHamp\TheOg\Image;
-use SimonHamp\TheOg\Background;
 use SimonHamp\TheOg\Themes\Themes;
 
 include_once __DIR__.'/../vendor/autoload.php';
@@ -31,7 +31,7 @@ include_once __DIR__.'/../vendor/autoload.php';
 
         Some slightly smaller but potentially much longer subtext. It could be really long so we might need to trim it completely after many words.
         TEXT)
-    ->background(Background::JustWaves,0.2)
+    ->background(new JustWaves(), 0.2)
     ->save(__DIR__.'/test3.png');
 
 // Basic with BackgroundUrl
