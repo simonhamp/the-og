@@ -3,8 +3,8 @@
 namespace SimonHamp\TheOg\Themes;
 
 use Intervention\Image\Colors\Rgb\Color;
-use SimonHamp\TheOg\Font;
 use SimonHamp\TheOg\Interfaces\Background;
+use SimonHamp\TheOg\Interfaces\Font;
 use SimonHamp\TheOg\Interfaces\Theme;
 
 abstract class AbstractTheme implements Theme

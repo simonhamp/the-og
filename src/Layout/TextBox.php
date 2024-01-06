@@ -8,7 +8,7 @@ use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
 use Intervention\Image\Modifiers\TextModifier;
 use Intervention\Image\Typography\FontFactory;
 use Intervention\Image\Typography\TextBlock;
-use SimonHamp\TheOg\Font;
+use SimonHamp\TheOg\Interfaces\Font;
 use SimonHamp\TheOg\Modifiers\TextModifier as CustomTextModifier;
 
 readonly class TextBox extends Box
