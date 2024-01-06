@@ -2,7 +2,7 @@
 
 namespace SimonHamp\TheOg\Themes;
 
-use SimonHamp\TheOg\Font;
+use SimonHamp\TheOg\Fonts\{InterBlack, InterBold, InterLight};
 use SimonHamp\TheOg\Interfaces\Theme;
 
 enum Themes: string
@@ -27,12 +27,12 @@ enum Themes: string
             accentColor: '#247BA0',
             backgroundColor: '#ECEBE4',
             baseColor: '#153B50',
-            baseFont: Font::InterBold,
+            baseFont: new InterBold(),
             callToActionBackgroundColor: '#153B50',
             callToActionColor: '#ECEBE4',
             descriptionColor: '#429EA6',
-            descriptionFont: Font::InterLight,
-            titleFont: Font::InterBlack,
+            descriptionFont: new InterLight(),
+            titleFont: new InterBlack(),
         ) extends AbstractTheme {};
     }
 
@@ -45,10 +45,10 @@ enum Themes: string
             accentColor: '#5D737E',
             backgroundColor: '#02111B',
             baseColor: '#FCFCFC',
-            baseFont: Font::InterBold,
+            baseFont: new InterBold(),
             descriptionColor: '#3F4045',
-            descriptionFont: Font::InterLight,
-            titleFont: Font::InterBlack,
+            descriptionFont: new InterLight(),
+            titleFont: new InterBlack(),
             urlColor: '#30292F',
         ) extends AbstractTheme {};
     }

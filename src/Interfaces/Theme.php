@@ -3,7 +3,6 @@
 namespace SimonHamp\TheOg\Interfaces;
 
 use Intervention\Image\Colors\Rgb\Color;
-use SimonHamp\TheOg\Font;
 
 interface Theme
 {
