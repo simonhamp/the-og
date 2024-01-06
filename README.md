@@ -105,13 +105,9 @@ More layouts are coming.
 
 ## Testing
 
-There's a basic test script in `tests/test.php`. You can execute this directly from the command line:
-
-```shell
-php tests/test.php
-```
-
-But a more robust test suite is needed and is coming.
+The OG uses [snapshot testing](https://github.com/spatie/phpunit-snapshot-assertions). To run the integration tests, 
+install [NodeJS](https://nodejs.org/en) (version 20 or above) and install the dependencies with `npm install`. Lastly, 
+the tests with `./vendor/bin/phpunit`. 
 
 ## Contributing
 
