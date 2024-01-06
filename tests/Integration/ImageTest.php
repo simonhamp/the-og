@@ -3,7 +3,7 @@
 namespace Tests\Integration;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use SimonHamp\TheOg\Background;
+use SimonHamp\TheOg\Backgrounds\JustWaves;
 use SimonHamp\TheOg\Image;
 use SimonHamp\TheOg\Themes\Themes;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -52,7 +52,7 @@ class ImageTest extends IntegrationTestCase
         Some slightly smaller but potentially much longer subtext. It could be really long so we might need to trim it completely after many words.
         TEXT
                 )
-                ->background(Background::JustWaves, 0.2),
+                ->background(new JustWaves(), 0.2),
             'override-some-elements',
         ];
 
