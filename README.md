@@ -1,3 +1,5 @@
+![header](thumbnail.png)
+
 # The OG
 
 An OpenGraph image generator written purely in PHP, so you don't need to install another runtime somewhere
