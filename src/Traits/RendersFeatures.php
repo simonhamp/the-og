@@ -6,11 +6,11 @@ use Imagick;
 use Intervention\Image\Geometry\Point;
 use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
-use SimonHamp\TheOg\Background;
 use SimonHamp\TheOg\Border;
 use SimonHamp\TheOg\BorderPosition;
 use SimonHamp\TheOg\Font;
 use SimonHamp\TheOg\Image as Config;
+use SimonHamp\TheOg\Interfaces\Background;
 use SimonHamp\TheOg\Layout\TextBox;
 
 trait RendersFeatures
@@ -89,7 +89,7 @@ trait RendersFeatures
     {
         $textBox->render()->apply($this->canvas);
     }
-    
+
     protected function renderBorder(): void
     {
         match ($this->border->getPosition()) {
