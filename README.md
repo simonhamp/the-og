@@ -1,3 +1,5 @@
+![](https://github.com/simonhamp/the-og/blob/main/thumbnail.png?raw=true)
+
 # The OG
 
 An OpenGraph image generator written purely in PHP, so you don't need to install another runtime somewhere
