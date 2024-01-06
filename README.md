@@ -107,7 +107,7 @@ More layouts are coming.
 
 The OG uses [snapshot testing](https://github.com/spatie/phpunit-snapshot-assertions). To run the integration tests, 
 install [NodeJS](https://nodejs.org/en) (version 20 or above) and install the dependencies with `npm install`. Lastly, 
-the tests with `./vendor/bin/phpunit`. 
+execute the tests with `./vendor/bin/phpunit`. 
 
 ## Contributing
 
