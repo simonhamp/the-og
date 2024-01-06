@@ -43,7 +43,7 @@ use SimonHamp\TheOg\Background;
 
 And here's the image that generates:
 
-![](https://github.com/simonhamp/the-og/blob/main/tests/test.png)
+![](https://github.com/simonhamp/the-og/assets/11269635/28055b75-7d8d-4c0e-b0c8-06415565c299)
 
 ### Themes
 
