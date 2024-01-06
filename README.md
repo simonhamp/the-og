@@ -1,4 +1,4 @@
-![header](thumbnail.png)
+![](https://github.com/simonhamp/the-og/blob/main/thumbnail.png?raw=true)
 
 # The OG
 
