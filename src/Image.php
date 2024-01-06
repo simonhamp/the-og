@@ -21,6 +21,7 @@ class Image
     public readonly string $title;
     public readonly string $url;
     public readonly string $watermark;
+    public readonly string $backgroundUrl;
 
     public function __construct()
     {
@@ -107,6 +108,16 @@ class Image
             $this->theme = $theme;
         }
 
+        return $this;
+    }
+
+    /**
+     * The background image from URL
+     */
+    public function backgroundUrl(string $backgroundUrl, ?float $opacity): self
+    {
+        $this->backgroundUrl = $backgroundUrl;
+        $this->theme->backgroundOpacity($opacity);
         return $this;
     }
 
