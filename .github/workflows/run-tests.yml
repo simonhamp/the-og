@@ -7,7 +7,7 @@ on:
 
 jobs:
   run-tests:
-    runs-on: ${{ matrics.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: true
       matrix:
