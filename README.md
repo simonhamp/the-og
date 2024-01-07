@@ -45,7 +45,7 @@ use SimonHamp\TheOg\Background;
 
 And here's the image that generates:
 
-![](https://github.com/simonhamp/the-og/blob/main/tests/test.png)
+![](https://github.com/simonhamp/the-og/blob/main/tests/Integration/__snapshots__/ImageTest__test_basic_image%20with%20data%20set%20override%20some%20elements__1.png)
 
 ### Themes
 
