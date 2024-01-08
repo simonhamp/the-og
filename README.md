@@ -30,8 +30,8 @@ composer require simonhamp/the-og --with-all-dependencies
 Using The OG is really simple. Here's a basic example:
 
 ```php
-use SimonHamp\TheOg\Image;
 use SimonHamp\TheOg\Background;
+use SimonHamp\TheOg\Image;
 
 (new Image())
     ->accentColor('#cc0000')
@@ -66,18 +66,19 @@ $image->theme(Themes::Dark);
 Themes are simple classes. You can create your own theme simply by extending the `AbstractTheme` class:
 
 ```php
+use SimonHamp\TheOg\Fonts\Inter;
 use SimonHamp\TheOg\Themes\AbstractTheme;
 
 $theme = new class(
     accentColor: '#247BA0',
     backgroundColor: '#ECEBE4',
     baseColor: '#153B50',
-    baseFont: Font::InterBold,
+    baseFont: Inter::bold(),
     callToActionBackgroundColor: '#153B50',
     callToActionColor: '#ECEBE4',
     descriptionColor: '#429EA6',
-    descriptionFont: Font::InterLight,
-    titleFont: Font::InterBlack,
+    descriptionFont: Inter::light(),
+    titleFont: Inter::black(),
 ) extends AbstractTheme {};
 
 $image = new Image;

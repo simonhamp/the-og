@@ -1,10 +1,11 @@
 <?php
 
-namespace SimonHamp\TheOg\Themes;
+namespace SimonHamp\TheOg\Theme;
 
 use Intervention\Image\Colors\Rgb\Color;
-use SimonHamp\TheOg\Background;
-use SimonHamp\TheOg\Font;
+use SimonHamp\TheOg\Background as BuiltInBackground;
+use SimonHamp\TheOg\Interfaces\Background;
+use SimonHamp\TheOg\Interfaces\Font;
 use SimonHamp\TheOg\Interfaces\Theme;
 
 abstract class AbstractTheme implements Theme
@@ -43,8 +44,12 @@ abstract class AbstractTheme implements Theme
         return Color::create($this->accentColor);
     }
 
-    public function background(Background $background): self
+    public function background(Background|BuiltInBackground $background): self
     {
+        if ($background instanceof BuiltInBackground) {
+            $background = $background->load();
+        }
+
         $this->background = $background;
         return $this;
     }
@@ -101,6 +106,7 @@ abstract class AbstractTheme implements Theme
     public function baseFont(Font $font): self
     {
         $this->baseFont = $font;
+
         return $this;
     }
 

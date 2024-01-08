@@ -2,11 +2,8 @@
 
 namespace SimonHamp\TheOg\Layout;
 
-use Intervention\Image\Colors\Rgb\Color;
-use SimonHamp\TheOg\Background;
 use SimonHamp\TheOg\Border;
 use SimonHamp\TheOg\BorderPosition;
-use SimonHamp\TheOg\Font;
 use SimonHamp\TheOg\Interfaces\Layout;
 use SimonHamp\TheOg\Traits\RendersFeatures;
 

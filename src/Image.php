@@ -5,10 +5,13 @@ namespace SimonHamp\TheOg;
 use Intervention\Image\Image as RenderedImage;
 use Intervention\Image\Colors\Rgb\Color;
 use Intervention\Image\Encoders\PngEncoder;
+use Intervention\Image\Interfaces\EncoderInterface;
+use SimonHamp\TheOg\Background as BuiltInBackground;
+use SimonHamp\TheOg\Interfaces\Background;
 use SimonHamp\TheOg\Interfaces\Layout;
-use SimonHamp\TheOg\Layout\Layouts;
 use SimonHamp\TheOg\Interfaces\Theme;
-use SimonHamp\TheOg\Themes\Themes;
+use SimonHamp\TheOg\Layout\Layouts\Standard;
+use SimonHamp\TheOg\Theme\Theme as BuiltInTheme;
 
 class Image
 {
@@ -25,8 +28,8 @@ class Image
 
     public function __construct()
     {
-        $this->layout(Layouts::Standard);
-        $this->theme(Themes::Light);
+        $this->layout(new Standard);
+        $this->theme(BuiltInTheme::Light);
     }
 
     /**
@@ -86,24 +89,19 @@ class Image
     /**
      * The layout to use
      */
-    public function layout(Layouts|Layout $layout): self
+    public function layout(Layout $layout): self
     {
-        if ($layout instanceof Layouts) {
-            $this->layout = $layout->getLayout();
-        } else {
-            $this->layout = $layout;
-        }
-
+        $this->layout = $layout;
         return $this;
     }
 
     /**
      * The theme to use
      */
-    public function theme(Themes|Theme $theme): self
+    public function theme(Theme|BuiltInTheme $theme): self
     {
-        if ($theme instanceof Themes) {
-            $this->theme = $theme->getTheme();
+        if ($theme instanceof BuiltInTheme) {
+            $this->theme = $theme->load();
         } else {
             $this->theme = $theme;
         }
@@ -133,8 +131,14 @@ class Image
     /**
      * Override the theme's default background
      */
-    public function background(Background $background, ?float $opacity = 1.0): self
+    public function background(Background|BuiltInBackground $background, ?float $opacity = 1.0): self
     {
+        if ($background instanceof BuiltInBackground) {
+            $background = $background->load();
+        } else {
+            $background = $background;
+        }
+
         $this->theme->background($background);
         $this->theme->backgroundOpacity($opacity);
         return $this;
@@ -169,19 +173,19 @@ class Image
         return $this->layout->render($this);
     }
 
-    public function save(string $path, string $format = PngEncoder::class): self
+    public function save(string $path, EncoderInterface $encoder = new PngEncoder()): self
     {
         $this->render()
-            ->encode(new $format)
+            ->encode($encoder)
             ->save($path);
 
         return $this;
     }
 
-    public function toString(string $format = PngEncoder::class): string
+    public function toString(EncoderInterface $encoder = new PngEncoder): string
     {
         return $this->render()
-            ->encode(new $format)
+            ->encode($encoder)
             ->toString();
     }
 }
