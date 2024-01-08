@@ -48,7 +48,7 @@ enum Theme: string
             baseFont: Inter::bold(),
             descriptionColor: '#3F4045',
             descriptionFont: Inter::light(),
-            titleFont: new Inter::black(),
+            titleFont: Inter::black(),
             urlColor: '#30292F',
         ) extends AbstractTheme {};
     }
