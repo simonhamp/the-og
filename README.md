@@ -47,6 +47,51 @@ And here's the image that generates:
 
 ![](https://github.com/simonhamp/the-og/blob/main/tests/Integration/__snapshots__/ImageTest__test_basic_image%20with%20data%20set%20override%20some%20elements__1.png)
 
+#### Storing the image elsewhere
+
+If you don't have filesystem access or you'd just like to directly store your image on a storage service like Amazon S3 you can do so by using `toString()`.
+`toString()` will return the encoded image object as a string.
+
+Here's an example of uploading your image to an S3 compatible storage service:
+
+```php
+use Aws\S3\S3Client;
+use SimonHamp\TheOg\Background;
+use SimonHamp\TheOg\Image;
+
+$s3 = new S3Client([
+    'version' => 'latest',
+    'region' => 'auto',
+    'credentials' => [
+        'key' => 'your-access-key',
+        'secret' => 'your-secret-key',
+    ],
+    'endpoint' => 'your-s3-compatible-endpoint',
+]);
+
+$bucketName = 'og-test-bucket';
+
+$image = (new Image())
+    ->accentColor('#cc0000')
+    ->border()
+    ->url('https://example.com/blog/some-blog-post-url')
+    ->title('Some blog post title that is quite big and quite long')
+    ->description('Some slightly smaller but potentially much longer subtext. It could be really long so we might need to trim it completely after many words')
+    ->background(Background::JustWaves, 0.2)
+    ->toString();
+
+
+$s3->putObject([
+    'Bucket' => $bucket,
+    'Key' => 'example-image.png',
+    'Body' => $image,
+    'ContentType' => 'image/png',
+    'ACL' => 'public-read',
+]);
+```
+
+The image has now been uploaded to S3 and you can serve it from your public bucket URL.
+
 ### Themes
 
 Themes set the colors, fonts, and styles for your image. There are currently 2 themes available: `Light` and `Dark`.
