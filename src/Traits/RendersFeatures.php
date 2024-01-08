@@ -8,7 +8,6 @@ use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
 use SimonHamp\TheOg\Border;
 use SimonHamp\TheOg\BorderPosition;
-use SimonHamp\TheOg\Font;
 use SimonHamp\TheOg\Image as Config;
 use SimonHamp\TheOg\Interfaces\Background;
 use SimonHamp\TheOg\Layout\TextBox;
@@ -28,14 +27,14 @@ trait RendersFeatures
         $this->canvas = $this->manager->create($this->width, $this->height)
             ->fill($this->config->theme->getBackgroundColor());
 
-        // TODO: This would be better as a homogenous stack where we can simply add items of a given type to the stack
-        // and then loop over the items on the stack and call `render` on each one
+        // TODO: This would be better as a homogenous stack where we can simply add items of a given type (Box) to the
+        // stack. Render could simply loop over the items on the stack and call `render` on each one
 
         // Worth noting here that the order of the items in the stack should determine the order of execution, which
         // may have implications on the rendering of later elements due to dependencies on rendered dimensions
 
-        // Basically, it's up to the layout developer to know the order of the dependencies and layering needs of the
-        // design and reconcile that themselves by ordering the stack appropriately
+        // Basically, it would be up to the layout developer to know the order of the dependencies and layering needs
+        // of the design and reconcile that themselves by ordering the stack appropriately within the layout class
 
         if ($this->config->theme->getBackground() instanceof Background) {
             $this->renderBackground();
