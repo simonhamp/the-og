@@ -1,3 +1,5 @@
+![](https://github.com/simonhamp/the-og/blob/main/thumbnail.png?raw=true)
+
 # The OG
 
 An OpenGraph image generator written purely in PHP, so you don't need to install another runtime somewhere
@@ -43,7 +45,7 @@ use SimonHamp\TheOg\Image;
 
 And here's the image that generates:
 
-![](https://github.com/simonhamp/the-og/blob/main/tests/test.png)
+![](https://github.com/simonhamp/the-og/blob/main/tests/Integration/__snapshots__/ImageTest__test_basic_image%20with%20data%20set%20override%20some%20elements__1.png)
 
 ### Themes
 
@@ -106,13 +108,9 @@ More layouts are coming.
 
 ## Testing
 
-There's a basic test script in `tests/test.php`. You can execute this directly from the command line:
-
-```shell
-php tests/test.php
-```
-
-But a more robust test suite is needed and is coming.
+The OG uses [snapshot testing](https://github.com/spatie/phpunit-snapshot-assertions). To run the integration tests, 
+install [NodeJS](https://nodejs.org/en) (version 20 or above) and install the dependencies with `npm install`. Lastly, 
+execute the tests with `./vendor/bin/phpunit`. 
 
 ## Contributing
 

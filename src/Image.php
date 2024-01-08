@@ -181,4 +181,11 @@ class Image
 
         return $this;
     }
+
+    public function toString(string $format = PngEncoder::class): string
+    {
+        return $this->render()
+            ->encode(new $format)
+            ->toString();
+    }
 }

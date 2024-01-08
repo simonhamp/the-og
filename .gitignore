@@ -1,3 +1,6 @@
 .DS_Store
 /vendor
 /composer.lock
+/node_modules
+/phpunit.xml
+/.phpunit.cache
