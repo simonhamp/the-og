@@ -5,7 +5,7 @@ namespace Tests\Integration;
 use PHPUnit\Framework\Attributes\DataProvider;
 use SimonHamp\TheOg\Background;
 use SimonHamp\TheOg\Image;
-use SimonHamp\TheOg\Themes\Themes;
+use SimonHamp\TheOg\Theme\Theme;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class ImageTest extends IntegrationTestCase
@@ -34,7 +34,7 @@ class ImageTest extends IntegrationTestCase
 
         yield 'different theme' => [
             (new Image())
-                ->theme(Themes::Dark)
+                ->theme(Theme::Dark)
                 ->url('https://example.com/blog/some-blog-post-url')
                 ->title('Some blog post title that is quite big and quite long')
                 ->description('Some slightly smaller but potentially much longer subtext. It could be really long so we might need to trim it completely after many words'),
@@ -67,7 +67,7 @@ class ImageTest extends IntegrationTestCase
 
         yield 'different theme with background url' => [
             (new Image())
-                ->theme(Themes::Dark)
+                ->theme(Theme::Dark)
                 ->url('https://example.com/blog/some-blog-post-url')
                 ->title('Some blog post title that is quite big and quite long')
                 ->description('Some slightly smaller but potentially much longer subtext. It could be really long so we might need to trim it completely after many words')
