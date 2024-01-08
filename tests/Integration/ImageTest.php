@@ -22,6 +22,12 @@ class ImageTest extends IntegrationTestCase
         $this->assertMatchesImageSnapshot($path);
     }
 
+    #[DataProvider('snapshotImages')]
+    public function test_stringify_image(Image $image, string $name): void
+    {
+        $this->assertIsString($image->toString());
+    }
+
     public static function snapshotImages(): iterable
     {
         yield 'basic' => [
