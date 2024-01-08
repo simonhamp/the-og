@@ -62,8 +62,8 @@ $image->theme(Theme::Dark);
 Themes are simple classes. You can create your own theme simply by extending the `AbstractTheme` class:
 
 ```php
-use SimonHamp\TheOg\Themes\AbstractTheme;
 use SimonHamp\TheOg\Fonts\Inter;
+use SimonHamp\TheOg\Themes\AbstractTheme;
 
 $theme = new class(
     accentColor: '#247BA0',
