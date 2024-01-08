@@ -28,6 +28,6 @@ class Inter extends AbstractFont
 
     public function path(): string
     {
-        return __DIR__ . "/../../resources/fonts/Inter/static/Inter-{$this->variant}.ttf";
+        return __DIR__ . "/../../../resources/fonts/Inter/static/Inter-{$this->variant}.ttf";
     }
 }
