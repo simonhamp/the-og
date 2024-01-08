@@ -20,7 +20,12 @@ class IntegrationTestCase extends TestCase
             RecursiveIteratorIterator::CHILD_FIRST,
         );
 
+        /** @var \SplFileInfo $file */
         foreach ($files as $file) {
+            if ($file->getFilename() === '.gitkeep') {
+                continue;
+            }
+
             unlink($file->getRealPath());
         }
     }
