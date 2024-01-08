@@ -1,16 +1,16 @@
 <?php
 
-namespace SimonHamp\TheOg\Themes;
+namespace SimonHamp\TheOg\Theme;
 
-use SimonHamp\TheOg\Fonts\{InterBlack, InterBold, InterLight};
-use SimonHamp\TheOg\Interfaces\Theme;
+use SimonHamp\TheOg\Theme\Fonts\Inter;
+use SimonHamp\TheOg\Interfaces\Theme as ThemeInterface;
 
-enum Themes: string
+enum Theme: string
 {
     case Light = 'light';
     case Dark = 'dark';
 
-    public function getTheme(): Theme
+    public function load(): ThemeInterface
     {
         return match ($this) {
             self::Light => $this->lightTheme(),
@@ -21,34 +21,34 @@ enum Themes: string
     /**
      * https://coolors.co/ecebe4-cc998d-16f4d0-429ea6-153b50
      */
-    protected function lightTheme(): Theme
+    protected function lightTheme(): ThemeInterface
     {
         return new class(
             accentColor: '#247BA0',
             backgroundColor: '#ECEBE4',
             baseColor: '#153B50',
-            baseFont: new InterBold(),
+            baseFont: Inter::bold(),
             callToActionBackgroundColor: '#153B50',
             callToActionColor: '#ECEBE4',
             descriptionColor: '#429EA6',
-            descriptionFont: new InterLight(),
-            titleFont: new InterBlack(),
+            descriptionFont: Inter::light(),
+            titleFont: Inter::black(),
         ) extends AbstractTheme {};
     }
 
     /**
      * https://coolors.co/02111b-3f4045-30292f-5d737e-fcfcfc
      */
-    protected function darkTheme(): Theme
+    protected function darkTheme(): ThemeInterface
     {
         return new class(
             accentColor: '#5D737E',
             backgroundColor: '#02111B',
             baseColor: '#FCFCFC',
-            baseFont: new InterBold(),
+            baseFont: Inter::bold(),
             descriptionColor: '#3F4045',
-            descriptionFont: new InterLight(),
-            titleFont: new InterBlack(),
+            descriptionFont: Inter::light(),
+            titleFont: new Inter::black(),
             urlColor: '#30292F',
         ) extends AbstractTheme {};
     }
