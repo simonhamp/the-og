@@ -15,7 +15,7 @@ Thank you 🙏
 
 ## Sponsors
 
-[Laradir](https://laradir.com/?ref=laravel-nov-csv-import-github) - Connecting the best Laravel Developers with the best Laravel Teams
+[Laradir](https://laradir.com/?ref=the-og-github) - Connecting the best Laravel Developers with the best Laravel Teams
 
 ## Installation
 
