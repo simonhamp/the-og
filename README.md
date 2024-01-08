@@ -101,7 +101,7 @@ You can set the theme on your image at any point before it's rendered:
 
 ```php
 $image = new Image;
-$image->theme(Theme::Dark);
+$image->theme(Themes::Dark);
 ```
 
 #### Creating themes
