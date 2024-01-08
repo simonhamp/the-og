@@ -55,8 +55,10 @@ The default theme is `Light`.
 You can set the theme on your image at any point before it's rendered:
 
 ```php
+use SimonHamp\TheOg\Themes\Themes;
+
 $image = new Image;
-$image->theme(Theme::Dark);
+$image->theme(Themes::Dark);
 ```
 
 #### Creating themes
@@ -104,6 +106,25 @@ them.
 There are currently 2 layouts: `Standard` and `GitHubBasic`. `Standard` is the default.
 
 More layouts are coming.
+
+### Storing the image elsewhere
+
+If you prefer to store your image somewhere other than the local filesystem (e.g. storing it on Amazon S3) you can use the `toString()` method.
+
+`toString()` will return the rendered image as a binary string:
+
+```php
+$image = (new Image())->toString();
+
+// $service here could be an AWS\S3\S3Client, for example
+$service->putObject([
+    'Key' => 'example-image.png',
+    'Body' => $image,
+    'ContentType' => 'image/png',
+]);
+```
+
+This will send the raw binary data directly to the external service without needing to write the image to a file on the local disk first.
 
 ## Testing
 

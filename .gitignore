@@ -4,3 +4,5 @@
 /node_modules
 /phpunit.xml
 /.phpunit.cache
+
+.idea/
