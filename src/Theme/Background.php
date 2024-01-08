@@ -2,9 +2,9 @@
 
 namespace SimonHamp\TheOg\Theme;
 
-use SimonHamp\TheOg\Interfaces\Background;
+use SimonHamp\TheOg\Interfaces\Background as BackgroundInterface;
 
-abstract class AbstractBackground implements Background
+class Background implements BackgroundInterface
 {
     public function __construct(protected string $path)
     {

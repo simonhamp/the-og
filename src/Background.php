@@ -3,7 +3,7 @@
 namespace SimonHamp\TheOg;
 
 use SimonHamp\TheOg\Interfaces\Background as BackgroundInterface;
-use SimonHamp\TheOg\Theme\AbstractBackground;
+use SimonHamp\TheOg\Theme\Background as BaseBackground;
 
 enum Background: string
 {
@@ -13,6 +13,6 @@ enum Background: string
 
     public function load(): BackgroundInterface
     {
-        return new class (__DIR__ . '/../resources/images/' . $this->value) extends AbstractBackground {};
+        return new BaseBackground(__DIR__ . '/../resources/images/' . $this->value);
     }
 }
