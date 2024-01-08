@@ -21,7 +21,7 @@ class Inter extends AbstractFont
         return new self('Bold');
     }
 
-    public static function regular(): self
+    public static function light(): self
     {
         return new self('Light');
     }
