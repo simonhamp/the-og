@@ -5,6 +5,7 @@ namespace SimonHamp\TheOg;
 use Intervention\Image\Image as RenderedImage;
 use Intervention\Image\Colors\Rgb\Color;
 use Intervention\Image\Encoders\PngEncoder;
+use Intervention\Image\Interfaces\EncoderInterface;
 use SimonHamp\TheOg\Background as BuiltInBackground;
 use SimonHamp\TheOg\Interfaces\Background;
 use SimonHamp\TheOg\Interfaces\Layout;
@@ -174,10 +175,24 @@ class Image
 
     public function save(string $path, string $format = PngEncoder::class): self
     {
+        $encoder = $this->validateEncoder($format);
+
         $this->render()
-            ->encode(new $format)
+            ->encode($encoder)
             ->save($path);
 
         return $this;
+    }
+
+    // TODO: Add a test that covers both eventualities here
+    protected function validateEncoder(string $encoder): EncoderInterface
+    {
+        if (is_a($encoder, $encoderInterface = EncoderInterface::class, true)) {
+            return new $encoder;
+        }
+
+        throw new \InvalidArgumentException(
+            "[{$encoder}] is not a valid image encoder. It must implement [{$encoderInterface}]"
+        );
     }
 }
