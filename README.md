@@ -30,7 +30,7 @@ composer require simonhamp/the-og --with-all-dependencies
 Using The OG is really simple. Here's a basic example:
 
 ```php
-use SimonHamp\TheOg\Backgrounds\JustWaves;
+use SimonHamp\TheOg\Background;
 use SimonHamp\TheOg\Image;
 
 (new Image())
@@ -39,7 +39,7 @@ use SimonHamp\TheOg\Image;
     ->url('https://example.com/blog/some-blog-post-url')
     ->title('Some blog post title that is quite big and quite long')
     ->description('Some slightly smaller but potentially much longer subtext. It could be really long so we might need to trim it completely after many words')
-    ->background(new JustWaves(), 0.2)
+    ->background(Background::JustWaves, 0.2)
     ->save(__DIR__.'/test.png');
 ```
 
@@ -65,20 +65,18 @@ Themes are simple classes. You can create your own theme simply by extending the
 
 ```php
 use SimonHamp\TheOg\Themes\AbstractTheme;
-use SimonHamp\TheOg\Fonts\InterBlack;
-use SimonHamp\TheOg\Fonts\InterBold;
-use SimonHamp\TheOg\Fonts\InterLight;
+use SimonHamp\TheOg\Font;
 
 $theme = new class(
     accentColor: '#247BA0',
     backgroundColor: '#ECEBE4',
     baseColor: '#153B50',
-    baseFont: new InterBold(),
+    baseFont: Font::InterBold,
     callToActionBackgroundColor: '#153B50',
     callToActionColor: '#ECEBE4',
     descriptionColor: '#429EA6',
-    descriptionFont: new InterLight(),
-    titleFont: new InterBlack(),
+    descriptionFont: Font::InterLight,
+    titleFont: Font::InterBlack,
 ) extends AbstractTheme {};
 
 $image = new Image;
