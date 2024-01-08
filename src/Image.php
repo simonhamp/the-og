@@ -173,26 +173,12 @@ class Image
         return $this->layout->render($this);
     }
 
-    public function save(string $path, string $format = PngEncoder::class): self
+    public function save(string $path, EncoderInterface $encoder = new PngEncoder()): self
     {
-        $encoder = $this->validateEncoder($format);
-
         $this->render()
             ->encode($encoder)
             ->save($path);
 
         return $this;
-    }
-
-    // TODO: Add a test that covers both eventualities here
-    protected function validateEncoder(string $encoder): EncoderInterface
-    {
-        if (is_a($encoder, $encoderInterface = EncoderInterface::class, true)) {
-            return new $encoder;
-        }
-
-        throw new \InvalidArgumentException(
-            "[{$encoder}] is not a valid image encoder. It must implement [{$encoderInterface}]"
-        );
     }
 }
