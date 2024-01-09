@@ -22,7 +22,7 @@ Thank you 🙏
 Install via Composer:
 
 ```shell
-composer require simonhamp/the-og --with-all-dependencies
+composer require simonhamp/the-og
 ```
 
 ## Usage
