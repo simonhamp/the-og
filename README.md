@@ -269,9 +269,25 @@ local disk first.
 
 ## Testing
 
-The OG uses [snapshot testing](https://github.com/spatie/phpunit-snapshot-assertions). To run the integration tests, 
-install [NodeJS](https://nodejs.org/en) (version 20 or above) and install the dependencies with `npm install`. Lastly, 
-execute the tests with `./vendor/bin/phpunit`. 
+The OG uses PHPUnit with [snapshot testing](https://github.com/spatie/phpunit-snapshot-assertions).
+
+To run the integration tests, you need to install all Composer dependencies:
+
+```shell
+composer install
+```
+
+You will also need [NodeJS](https://nodejs.org/en) (version 20 or above) and to install the NPM dependencies:
+
+```shell
+npm install
+```
+
+Once done, you can execute the tests:
+
+```shell
+./vendor/bin/phpunit
+```
 
 ## Contributing
 
