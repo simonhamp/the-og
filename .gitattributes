@@ -4,5 +4,7 @@
 /.gitattributes             export-ignore
 /.github                    export-ignore
 /.gitignore                 export-ignore
+/phpunit.xml.dist           export-ignore
 /tests                      export-ignore
-
+/thumbnail.php              export-ignore
+/thumbnail.png              export-ignore
