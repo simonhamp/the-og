@@ -63,6 +63,8 @@ Borders are usually defined as part of the theme, but you can override the borde
 itself:
 
 ```php
+use SimonHamp\TheOg\BorderPosition;
+
 $image = new Image;
 $image->border(BorderPosition::Top, 'pink', 10);
 ```
