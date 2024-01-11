@@ -11,20 +11,22 @@ use SimonHamp\TheOg\Interfaces\Background;
 use SimonHamp\TheOg\Interfaces\Layout;
 use SimonHamp\TheOg\Interfaces\Theme;
 use SimonHamp\TheOg\Layout\Layouts\Standard;
+use SimonHamp\TheOg\Theme\BackgroundPlacement;
 use SimonHamp\TheOg\Theme\Theme as BuiltInTheme;
 
 class Image
 {
     public Layout $layout;
+
     public Theme $theme;
 
     public readonly string $callToAction;
     public readonly string $description;
     public readonly string $picture;
     public readonly string $title;
+
     public readonly string $url;
     public readonly string $watermark;
-    public readonly string $backgroundUrl;
 
     public function __construct()
     {
@@ -110,16 +112,6 @@ class Image
     }
 
     /**
-     * The background image from URL
-     */
-    public function backgroundUrl(string $backgroundUrl, ?float $opacity): self
-    {
-        $this->backgroundUrl = $backgroundUrl;
-        $this->theme->backgroundOpacity($opacity);
-        return $this;
-    }
-
-    /**
      * Override the theme's default accent color
      */
     public function accentColor(string $color): self
@@ -131,16 +123,21 @@ class Image
     /**
      * Override the theme's default background
      */
-    public function background(Background|BuiltInBackground $background, ?float $opacity = 1.0): self
+    public function background(Background|BuiltInBackground $background, ?float $opacity = null, ?BackgroundPlacement $placement = null): self
     {
         if ($background instanceof BuiltInBackground) {
             $background = $background->load();
-        } else {
-            $background = $background;
+        }
+
+        if (isset($opacity)) {
+            $background->setOpacity($opacity);
+        }
+
+        if (isset($placement)) {
+            $background->setPlacement($placement);
         }
 
         $this->theme->background($background);
-        $this->theme->backgroundOpacity($opacity);
         return $this;
     }
 
