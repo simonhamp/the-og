@@ -1,5 +1,12 @@
 ![](https://github.com/simonhamp/the-og/blob/main/thumbnail.png?raw=true)
 
+<p align="center">
+<a href="https://github.com/simonhamp/the-og/actions"><img src="https://img.shields.io/github/actions/workflow/status/simonhamp/the-og/run-tests.yml?style=for-the-badge&label=tests" alt="Build Status"></a>
+<a href="https://packagist.org/packages/simonhamp/the-og"><img src="https://img.shields.io/packagist/v/simonhamp/the-og?style=for-the-badge&label=latest" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/simonhamp/the-og"><img src="https://img.shields.io/packagist/dt/simonhamp/the-og?style=for-the-badge&label=installs" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/simonhamp/the-og?style=for-the-badge&label=license" alt="License"></a>
+</p>
+
 # The OG
 
 An OpenGraph image generator written purely in PHP, so you don't need to install another runtime somewhere
