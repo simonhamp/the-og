@@ -5,6 +5,7 @@ namespace Tests\Integration;
 use PHPUnit\Framework\Attributes\DataProvider;
 use SimonHamp\TheOg\Background;
 use SimonHamp\TheOg\Image;
+use SimonHamp\TheOg\Layout\Layouts\GitHubBasic;
 use SimonHamp\TheOg\Theme\Theme;
 use Spatie\Snapshots\MatchesSnapshots;
 
@@ -73,6 +74,15 @@ class ImageTest extends IntegrationTestCase
                 ->description('Some slightly smaller but potentially much longer subtext. It could be really long so we might need to trim it completely after many words')
                 ->backgroundUrl('https://www.goodfreephotos.com/albums/animals/mammals/african-bush-elephant-loxodonta-africana.jpg', 0.2),
             'different-theme-with-background-url',
+        ];
+
+        yield 'github layout' => [
+            (new Image())
+                ->layout(new GitHubBasic)
+                ->url('username/repo')
+                ->title('An awesome package')
+                ->background(Background::CloudyDay, 0.8),
+            'githubbasic-layout',
         ];
     }
 }
