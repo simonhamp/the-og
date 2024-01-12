@@ -4,8 +4,10 @@ namespace SimonHamp\TheOg\Layout;
 
 use Intervention\Image\Geometry\Point;
 use Intervention\Image\Geometry\Rectangle;
+use Intervention\Image\Interfaces\ImageInterface;
+use SimonHamp\TheOg\Interfaces\Box as BoxInterface;
 
-readonly class Box
+readonly class Box implements BoxInterface
 {
     public Rectangle $box;
     public Position $pivot;
@@ -112,5 +114,18 @@ readonly class Box
     {
         $this->renderedBox = $box;
         return $this;
+    }
+
+    public function render(ImageInterface $image): void
+    {
+        $image->drawRectangle(
+            $this->calculatePosition()->x(),
+            $this->calculatePosition()->y(),
+            function ($rectangle) {
+                $rectangle->size($this->box->width(), $this->box->height());
+                $rectangle->background('orange'); // background color of rectangle
+                $rectangle->border('white', 2); // border color & size of rectangle
+            }
+        );
     }
 }
