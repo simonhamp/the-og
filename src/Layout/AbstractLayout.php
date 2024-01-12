@@ -4,6 +4,7 @@ namespace SimonHamp\TheOg\Layout;
 
 use SimonHamp\TheOg\Border;
 use SimonHamp\TheOg\BorderPosition;
+use SimonHamp\TheOg\Interfaces\Box as BoxInterface;
 use SimonHamp\TheOg\Interfaces\Layout;
 use SimonHamp\TheOg\Traits\RendersFeatures;
 
@@ -18,12 +19,20 @@ abstract class AbstractLayout implements Layout
     protected int $padding;
     protected int $width;
 
-    protected TextBox $callToAction;
-    protected TextBox $description;
-    protected TextBox $title;
-    protected TextBox $url;
+    /**
+     * @var array<string, BoxInterface>
+     */
+    protected array $features = [];
 
-    abstract protected function features(string $feature, string $setting): mixed;
+    public function addFeature(string $name, BoxInterface $feature): void
+    {
+        $this->features[$name] = $feature;
+    }
+
+    public function getFeature(string $name): BoxInterface
+    {
+        return $this->features[$name];
+    }
 
     public function border(Border $border): self
     {
@@ -31,36 +40,19 @@ abstract class AbstractLayout implements Layout
         return $this;
     }
 
-    public function callToAction(): string
+    public function callToAction(): ?string
     {
-        return $this->config->callToAction;
+        return $this->config->callToAction ?? null;
     }
 
-    public function getCallToAction(): TextBox
+    public function description(): ?string
     {
-        return $this->callToAction ??= (new TextBox())
-            ->text($this->callToAction())
-            ->color($this->config->theme->getCallToActionColor())
-            ->font($this->config->theme->getCallToActionFont())
-            ->size($this->features('call_to_action', 'font_size'))
-            ->box(...$this->features('call_to_action', 'dimensions'))
-            ->position(...$this->features('call_to_action', 'layout'));
+        return $this->config->description ?? null;
     }
 
-    public function description(): string
+    public function picture(): ?string
     {
-        return $this->config->description;
-    }
-
-    public function getDescription(): TextBox
-    {
-        return $this->description ??= (new TextBox())
-            ->text($this->description())
-            ->color($this->config->theme->getDescriptionColor())
-            ->font($this->config->theme->getDescriptionFont())
-            ->size($this->features('description', 'font_size'))
-            ->box(...$this->features('description', 'dimensions'))
-            ->position(...$this->features('description', 'layout'));
+        return $this->config->picture ?? null;
     }
 
     public function title(): string
@@ -68,37 +60,15 @@ abstract class AbstractLayout implements Layout
         return $this->config->title;
     }
 
-    public function getTitle(): TextBox
+    public function url(): ?string
     {
-        return $this->title ??= (new TextBox())
-            ->text($this->title())
-            ->color($this->config->theme->getTitleColor())
-            ->font($this->config->theme->getTitleFont())
-            ->size($this->features('title', 'font_size'))
-            ->box(...$this->features('title', 'dimensions'))
-            ->position(...$this->features('title', 'layout'));
-    }
-
-    public function url(): string
-    {
-        return parse_url($this->config->url, PHP_URL_HOST) ?? $this->config->url;
-    }
-
-    public function getUrl(): TextBox
-    {
-        return $this->url ??= (new TextBox())
-            ->text($this->url())
-            ->color($this->config->theme->getUrlColor())
-            ->font($this->config->theme->getUrlFont())
-            ->size($this->features('url', 'font_size'))
-            ->box(...$this->features('url', 'dimensions'))
-            ->position(...$this->features('url', 'layout'));
+        return parse_url($this->config->url, PHP_URL_HOST) ?? $this->config->url ?? null;
     }
 
     /**
      * The area within the canvas that we should be rendering content. This is just a convenience object
      */
-    public function mountArea(): Box
+    public function mountArea(): BoxInterface
     {
         return (new Box)
             ->box(
