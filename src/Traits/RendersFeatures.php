@@ -3,14 +3,12 @@
 namespace SimonHamp\TheOg\Traits;
 
 use Imagick;
-use Intervention\Image\Geometry\Point;
 use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
 use SimonHamp\TheOg\Border;
 use SimonHamp\TheOg\BorderPosition;
 use SimonHamp\TheOg\Image as Config;
 use SimonHamp\TheOg\Interfaces\Background;
-use SimonHamp\TheOg\Layout\TextBox;
 
 trait RendersFeatures
 {
@@ -26,15 +24,6 @@ trait RendersFeatures
 
         $this->canvas = $this->manager->create($this->width, $this->height)
             ->fill($this->config->theme->getBackgroundColor());
-
-        // TODO: This would be better as a homogenous stack where we can simply add items of a given type (Box) to the
-        // stack. Render could simply loop over the items on the stack and call `render` on each one
-
-        // Worth noting here that the order of the items in the stack should determine the order of execution, which
-        // may have implications on the rendering of later elements due to dependencies on rendered dimensions
-
-        // Basically, it would be up to the layout developer to know the order of the dependencies and layering needs
-        // of the design and reconcile that themselves by ordering the stack appropriately within the layout class
 
         if ($this->config->theme->getBackground() instanceof Background) {
             $this->renderBackground();
@@ -52,22 +41,13 @@ trait RendersFeatures
             $this->renderBackgroundUrl();
         }
 
-        if (isset($this->config->url) && $url = $this->getUrl($this->config->url)) {
-            $this->renderTextBox($url);
-        }
+        // Loop over the stack of features and render each to the canvas
+        // The order of the items in the stack will determine the order in which they are rendered and thus their
+        // 'layering' on the canvas: earlier elements will be rendered 'underneath' later elements.
+        $this->features();
 
-        if (isset($this->config->title) && $title = $this->getTitle($this->config->title)) {
-            $this->renderTextBox($title);
-        }
-
-        if (isset($this->config->description) && $description = $this->getDescription($this->config->description)) {
-            $this->renderTextBox($description);
-        }
-
-        // TODO: Render callToActionBackground
-
-        if (isset($this->config->callToAction) && $callToAction = $this->getCallToAction($this->config->callToAction)) {
-            $this->renderTextBox($callToAction);
+        foreach ($this->features as $feature) {
+            $feature->render($this->canvas);
         }
 
         if (! isset($this->border)) {
@@ -82,11 +62,6 @@ trait RendersFeatures
         $this->renderBorder();
 
         return $this->canvas;
-    }
-
-    protected function renderTextBox(TextBox $textBox): void
-    {
-        $textBox->render()->apply($this->canvas);
     }
 
     protected function renderBorder(): void
