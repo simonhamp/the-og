@@ -11,8 +11,13 @@ readonly class Box implements BoxInterface
 {
     public Rectangle $box;
     public Position $pivot;
+
     public Point $position;
-    public Box $relativeTo;
+
+    /**
+     * @var Closure<Box>
+     */
+    public mixed $relativeTo;
     public Position $relativeToPosition;
     public Rectangle $renderedBox;
 
@@ -36,18 +41,18 @@ readonly class Box implements BoxInterface
         $this->position = new Point($x, $y);
 
         if ($relativeTo) {
-            $this->relativeTo = $relativeTo();
+            $this->relativeTo = $relativeTo;
             $this->relativeToPosition = $position;
             $this->pivot = $pivot;
         }
 
         return $this;
     }
-    
+
     public function calculatePosition(): Point
     {
         if (isset($this->relativeTo)) {
-            $position = $this->relativeTo->getPointForPosition($this->relativeToPosition);
+            $position = ($this->relativeTo)()->getPointForPosition($this->relativeToPosition);
 
             return new Point(
                 $position->x() + $this->position->x(),
