@@ -29,7 +29,7 @@ trait RendersFeatures
             $this->renderBackground();
         }
 
-        if (isset($this->config->backgroundUrl) && $backgroundUrl = $this->getUrl($this->config->backgroundUrl)) {
+        if (isset($this->config->backgroundUrl) && $backgroundUrl = $this->config->backgroundUrl) {
             if (!filter_var($this->config->backgroundUrl, FILTER_VALIDATE_URL)) {
                 throw new \InvalidArgumentException('URL is not valid');
             }
