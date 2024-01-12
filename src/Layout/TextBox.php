@@ -2,9 +2,11 @@
 
 namespace SimonHamp\TheOg\Layout;
 
+use Intervention\Image\Geometry\Polygon;
 use Intervention\Image\Geometry\Rectangle;
 use Intervention\Image\Colors\Rgb\Color;
 use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
+use Intervention\Image\Interfaces\ImageInterface;
 use Intervention\Image\Modifiers\TextModifier;
 use Intervention\Image\Typography\FontFactory;
 use Intervention\Image\Typography\TextBlock;
@@ -63,9 +65,9 @@ readonly class TextBox extends Box
         return $this;
     }
 
-    public function render(): CustomTextModifier
+    public function render(ImageInterface $image): void
     {
-        return $this->ensureTextFitsBox($this->generateModifier($this->text));
+        $this->ensureTextFitsBox($this->generateModifier($this->text))->apply($image);
     }
 
     protected function generateModifier(string $text): CustomTextModifier
@@ -99,7 +101,7 @@ readonly class TextBox extends Box
         return $renderedBox->fitsInto($this->box);
     }
 
-    protected function getRenderedBoxForText(string $text, CustomTextModifier $modifier): Rectangle
+    protected function getRenderedBoxForText(string $text, CustomTextModifier $modifier): Rectangle|Polygon
     {
         return $modifier->boundingBox($this->getTextBlock($text));
     }
