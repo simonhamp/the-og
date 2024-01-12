@@ -25,7 +25,7 @@ class Standard extends AbstractLayout
             ->box($this->mountArea()->box->width(), 400)
             ->position(
                 x: 0,
-                y: 10,
+                y: 0,
                 relativeTo: fn () => $this->getFeature('url'),
                 position: Position::BottomLeft
             )
@@ -71,7 +71,7 @@ class Standard extends AbstractLayout
                 ->box($this->mountArea()->box->width(), 45)
                 ->position(
                     x: 0,
-                    y: 0,
+                    y: 20,
                     relativeTo: fn() => $this->mountArea()
                 )
             );
