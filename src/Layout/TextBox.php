@@ -2,6 +2,7 @@
 
 namespace SimonHamp\TheOg\Layout;
 
+use Intervention\Image\Geometry\Point;
 use Intervention\Image\Geometry\Polygon;
 use Intervention\Image\Geometry\Rectangle;
 use Intervention\Image\Colors\Rgb\Color;
@@ -67,15 +68,22 @@ readonly class TextBox extends Box
 
     public function render(ImageInterface $image): void
     {
-        $this->ensureTextFitsBox($this->generateModifier($this->text))->apply($image);
+        $this->ensureTextFitsBox($this->generateModifier($this->text, $this->calculatePosition()))->apply($image);
     }
 
-    protected function generateModifier(string $text): CustomTextModifier
+    protected function getPrerenderedBox(): Rectangle
+    {
+        $modifier = $this->generateModifier($this->text);
+
+        return $this->getFinalTextBox($modifier);
+    }
+
+    protected function generateModifier(string $text, Point $position = new Point()): CustomTextModifier
     {
         return new CustomTextModifier(
             new TextModifier(
                 $text,
-                $this->calculatePosition(),
+                $position,
                 (new FontFactory(
                     function(FontFactory $factory) {
                         $factory->filename($this->font->path());
@@ -113,12 +121,19 @@ readonly class TextBox extends Box
 
     protected function ensureTextFitsBox(CustomTextModifier $modifier): CustomTextModifier
     {
+        $this->getFinalTextBox($modifier);
+
+        return $modifier;
+    }
+
+    protected function getFinalTextBox(CustomTextModifier &$modifier): Rectangle
+    {
         $text = $this->text;
         $renderedBox = $this->getRenderedBoxForText($text, $modifier);
 
         while (! $this->doesTextFitInBox($renderedBox)) {
             if ($renderedBox->width() > $this->box->width()) {
-                $text = wordwrap($this->text, intval(floor($this->box->width() / ($modifier->boxSize('M')->width() / 1.8))));
+                $text = wordwrap($text, intval(floor($this->box->width() / ($modifier->boxSize('M')->width() / 1.8))));
                 $renderedBox = $this->getRenderedBoxForText($text, $modifier);
             }
 
@@ -134,11 +149,9 @@ readonly class TextBox extends Box
                 $renderedBox = $this->getRenderedBoxForText($text, $modifier);
             }
 
-            $modifier = $this->generateModifier($text);
+            $modifier = $this->generateModifier($text, $modifier->position);
         }
 
-        $this->setRenderedBox($renderedBox);
-
-        return $modifier;
+        return $renderedBox;
     }
 }
