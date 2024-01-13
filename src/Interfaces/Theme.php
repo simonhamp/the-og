@@ -18,14 +18,6 @@ interface Theme
 
     public function getBackgroundColor(): ColorInterface;
 
-    public function backgroundOpacity(float $opacity): self;
-
-    public function getBackgroundOpacity(): float;
-
-    public function backgroundUrl(string $url): self;
-
-    public function getBackgroundUrl(): ?string;
-
     public function baseColor(string $color): self;
 
     public function getBaseColor(): ColorInterface;

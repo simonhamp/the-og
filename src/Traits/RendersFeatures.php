@@ -11,6 +11,7 @@ use SimonHamp\TheOg\BorderPosition;
 use SimonHamp\TheOg\Image as Config;
 use SimonHamp\TheOg\Interfaces\Background;
 use SimonHamp\TheOg\Layout\TextBox;
+use SimonHamp\TheOg\Theme\BackgroundPlacement;
 
 trait RendersFeatures
 {
@@ -41,13 +42,7 @@ trait RendersFeatures
         }
 
         if (isset($this->config->backgroundUrl) && $backgroundUrl = $this->getUrl($this->config->backgroundUrl)) {
-            if (!filter_var($this->config->backgroundUrl, FILTER_VALIDATE_URL)) {
-                throw new \InvalidArgumentException('URL is not valid');
-            }
-            $imageInfo = @getimagesize($this->config->backgroundUrl);
-            if (!$imageInfo) {
-                throw new \InvalidArgumentException('URL is not an image');
-            }
+
 
             $this->renderBackgroundUrl();
         }
@@ -152,7 +147,21 @@ trait RendersFeatures
      */
     protected function renderBackground(): void
     {
-        $panel = $this->manager->read($this->config->theme->getBackground()->path());
+        $background = $this->config->theme->getBackground();
+
+        $path = $background->path();
+
+        if ($background->isUrl()) {
+            $imageInfo = @getimagesize($path);
+
+            if (!$imageInfo) {
+                throw new \InvalidArgumentException('Background URL provided is invalid');
+            }
+
+            $data = file_get_contents($path);
+        }
+
+        $panel = $this->manager->read($data ?? $path);
 
         $imagick = $panel->core()->native();
 
@@ -161,10 +170,19 @@ trait RendersFeatures
 
         $imagick->evaluateImage(
             Imagick::EVALUATE_MULTIPLY,
-            $this->config->theme->getBackgroundOpacity(),
+            $background->opacity(),
             Imagick::CHANNEL_ALPHA
         );
 
+        match ($background->placement()) {
+            BackgroundPlacement::Repeat => $this->renderBackgroundRepeat($panel),
+            BackgroundPlacement::Cover => $this->renderBackgroundCover($panel),
+            default => null,
+        };
+    }
+
+    protected function renderBackgroundRepeat(Image $panel): void
+    {
         $width = $panel->width();
         $height = $panel->height();
 
@@ -191,35 +209,10 @@ trait RendersFeatures
     }
 
     /**
-     * Renders a background image URL across the canvas and resizes it to cover the canvas
+     * Resizes the background image to cover the canvas
      */
-    protected function renderBackgroundUrl(): void
+    protected function renderBackgroundCover(Image $panel): void
     {
-        $panel = $this->manager->read(file_get_contents($this->config->backgroundUrl));
-
-        $imagick = $panel->core()->native();
-
-        $imagick->setImageVirtualPixelMethod(1);
-        $imagick->setImageAlphaChannel(Imagick::ALPHACHANNEL_ACTIVATE);
-
-        $imagick->evaluateImage(
-            Imagick::EVALUATE_MULTIPLY,
-            $this->config->theme->getBackgroundOpacity(),
-            Imagick::CHANNEL_ALPHA
-        );
-
-        $width = $panel->width();
-        $height = $panel->height();
-
-        $panel->resize($this->width, $this->height, function ($constraint) {
-            $constraint->aspectRatio();
-            $constraint->upsize();
-        });
-
-        $this->canvas->place(
-            element: $panel,
-            offset_x: 0,
-            offset_y: 0,
-        );
+        $this->canvas->place($panel->cover($this->width, $this->height));
     }
 }
