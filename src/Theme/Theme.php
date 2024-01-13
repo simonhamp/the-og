@@ -28,8 +28,7 @@ enum Theme: string
             backgroundColor: '#ECEBE4',
             baseColor: '#153B50',
             baseFont: Inter::bold(),
-            callToActionBackgroundColor: '#153B50',
-            callToActionColor: '#ECEBE4',
+            callToActionColor: '#153B50',
             descriptionColor: '#429EA6',
             descriptionFont: Inter::light(),
             titleFont: Inter::black(),
@@ -49,7 +48,6 @@ enum Theme: string
             descriptionColor: '#3F4045',
             descriptionFont: Inter::light(),
             titleFont: Inter::black(),
-            urlColor: '#30292F',
         ) extends AbstractTheme {};
     }
 }

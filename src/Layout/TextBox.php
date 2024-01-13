@@ -2,9 +2,12 @@
 
 namespace SimonHamp\TheOg\Layout;
 
+use Intervention\Image\Geometry\Point;
+use Intervention\Image\Geometry\Polygon;
 use Intervention\Image\Geometry\Rectangle;
 use Intervention\Image\Colors\Rgb\Color;
 use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
+use Intervention\Image\Interfaces\ImageInterface;
 use Intervention\Image\Modifiers\TextModifier;
 use Intervention\Image\Typography\FontFactory;
 use Intervention\Image\Typography\TextBlock;
@@ -63,17 +66,24 @@ readonly class TextBox extends Box
         return $this;
     }
 
-    public function render(): CustomTextModifier
+    public function render(ImageInterface $image): void
     {
-        return $this->ensureTextFitsBox($this->generateModifier($this->text));
+        $this->ensureTextFitsBox($this->generateModifier($this->text, $this->calculatePosition()))->apply($image);
     }
 
-    protected function generateModifier(string $text): CustomTextModifier
+    protected function getPrerenderedBox(): Rectangle
+    {
+        $modifier = $this->generateModifier($this->text);
+
+        return $this->getFinalTextBox($modifier);
+    }
+
+    protected function generateModifier(string $text, Point $position = new Point()): CustomTextModifier
     {
         return new CustomTextModifier(
             new TextModifier(
                 $text,
-                $this->calculatePosition(),
+                $position,
                 (new FontFactory(
                     function(FontFactory $factory) {
                         $factory->filename($this->font->path());
@@ -99,7 +109,7 @@ readonly class TextBox extends Box
         return $renderedBox->fitsInto($this->box);
     }
 
-    protected function getRenderedBoxForText(string $text, CustomTextModifier $modifier): Rectangle
+    protected function getRenderedBoxForText(string $text, CustomTextModifier $modifier): Rectangle|Polygon
     {
         return $modifier->boundingBox($this->getTextBlock($text));
     }
@@ -111,12 +121,19 @@ readonly class TextBox extends Box
 
     protected function ensureTextFitsBox(CustomTextModifier $modifier): CustomTextModifier
     {
+        $this->getFinalTextBox($modifier);
+
+        return $modifier;
+    }
+
+    protected function getFinalTextBox(CustomTextModifier &$modifier): Rectangle
+    {
         $text = $this->text;
         $renderedBox = $this->getRenderedBoxForText($text, $modifier);
 
         while (! $this->doesTextFitInBox($renderedBox)) {
             if ($renderedBox->width() > $this->box->width()) {
-                $text = wordwrap($this->text, intval(floor($this->box->width() / ($modifier->boxSize('M')->width() / 1.8))));
+                $text = wordwrap($text, intval(floor($this->box->width() / ($modifier->boxSize('M')->width() / 1.8))));
                 $renderedBox = $this->getRenderedBoxForText($text, $modifier);
             }
 
@@ -132,11 +149,9 @@ readonly class TextBox extends Box
                 $renderedBox = $this->getRenderedBoxForText($text, $modifier);
             }
 
-            $modifier = $this->generateModifier($text);
+            $modifier = $this->generateModifier($text, $modifier->position);
         }
 
-        $this->setRenderedBox($renderedBox);
-
-        return $modifier;
+        return $renderedBox;
     }
 }

@@ -11,13 +11,17 @@ interface Layout
 {
     public function border(Border $border): self;
 
+    public function callToAction(): ?string;
+
+    public function description(): ?string;
+
+    public function features(): void;
+
+    public function picture(): ?string;
+
     public function render(Config $config): Image;
 
-    public function getCallToAction(): TextBox;
+    public function title(): string;
 
-    public function getDescription(): TextBox;
-
-    public function getTitle(): TextBox;
-
-    public function getUrl(): TextBox;
+    public function url(): ?string;
 }

@@ -6,6 +6,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use SimonHamp\TheOg\Background as BuiltInBackground;
 use SimonHamp\TheOg\BorderPosition;
 use SimonHamp\TheOg\Image;
+use SimonHamp\TheOg\Layout\Layouts\GitHubBasic;
+use SimonHamp\TheOg\Layout\Layouts\TwoUp;
 use SimonHamp\TheOg\Theme\Background;
 use SimonHamp\TheOg\Theme\BackgroundPlacement;
 use SimonHamp\TheOg\Theme\Theme;
@@ -25,20 +27,25 @@ class ImageTest extends IntegrationTestCase
         $this->assertMatchesImageSnapshot($path);
     }
 
-    #[DataProvider('snapshotImages')]
-    public function test_stringify_image(Image $image, string $name): void
-    {
-        $this->assertIsString($image->toString());
-    }
-
     public static function snapshotImages(): iterable
     {
+        yield 'test layout' => [
+            (new Image())->layout(new TestLayout()),
+            'test-layout',
+        ];
+
         yield 'basic' => [
+            (new Image())
+                ->title('Just a standard og:image for a blog post with a simple title'),
+            'basic',
+        ];
+
+        yield 'more text features' => [
             (new Image())
                 ->url('https://example.com/blog/some-blog-post-url')
                 ->title('Some blog post title that is quite big and quite long')
                 ->description('Some slightly smaller but potentially much longer subtext. It could be really long so we might need to trim it completely after many words'),
-            'basic',
+            'more-text-features',
         ];
 
         yield 'different theme' => [
@@ -91,6 +98,49 @@ class ImageTest extends IntegrationTestCase
                 ->description('Some slightly smaller but potentially much longer subtext. It could be really long so we might need to trim it completely after many words')
                 ->background(new Background('https://placehold.co/600x400.png', 0.2)),
             'different-theme-with-background-url',
+        ];
+
+        yield 'github layout' => [
+            (new Image())
+                ->layout(new GitHubBasic)
+                ->url('username/repo')
+                ->title('An awesome package')
+                ->background(BuiltInBackground::CloudyDay, 0.8),
+            'githubbasic-layout',
+        ];
+
+        yield 'twoup layout' => [
+            (new Image())
+                ->layout(new TwoUp)
+                ->accentColor('#cc0000')
+                /**
+                 * Photo by Matthew Hamilton on Unsplash
+                 * @see https://unsplash.com/@thatsmrbio?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash
+                 * @see https://unsplash.com/photos/unpaired-red-adidas-sneaker-pO2bglTMJpo?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash
+                 */
+                ->picture(__DIR__.'/../resources/product.jpg')
+                ->url('https://my-ecommerce-store.com/')
+                ->title('This layout is great for eCommerce!')
+                ->callToAction('Buy Now →')
+                ->background(BuiltInBackground::CloudyDay, 0.8),
+            'twoup-layout',
+        ];
+
+        yield 'twoup dark' => [
+            (new Image())
+                ->layout(new TwoUp)
+                ->theme(Theme::Dark)
+                ->accentColor('#c33')
+                /**
+                 * Photo by Matthew Hamilton on Unsplash
+                 * @see https://unsplash.com/@thatsmrbio?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash
+                 * @see https://unsplash.com/photos/unpaired-red-adidas-sneaker-pO2bglTMJpo?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash
+                 */
+                ->picture(__DIR__.'/../resources/product.jpg')
+                ->url('https://my-ecommerce-store.com/')
+                ->title('This layout is great for eCommerce!')
+                ->callToAction('ONLY $99!'),
+            'twoup-dark',
         ];
     }
 }

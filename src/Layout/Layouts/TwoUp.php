@@ -4,12 +4,13 @@ namespace SimonHamp\TheOg\Layout\Layouts;
 
 use SimonHamp\TheOg\BorderPosition;
 use SimonHamp\TheOg\Layout\AbstractLayout;
+use SimonHamp\TheOg\Layout\PictureBox;
 use SimonHamp\TheOg\Layout\Position;
 use SimonHamp\TheOg\Layout\TextBox;
 
-class Standard extends AbstractLayout
+class TwoUp extends AbstractLayout
 {
-    protected BorderPosition $borderPosition = BorderPosition::All;
+    protected BorderPosition $borderPosition = BorderPosition::None;
     protected int $borderWidth = 25;
     protected int $height = 630;
     protected int $padding = 40;
@@ -17,59 +18,53 @@ class Standard extends AbstractLayout
 
     public function features(): void
     {
-        $this->addFeature((new TextBox())
-            ->name('title')
-            ->text($this->title())
-            ->color($this->config->theme->getTitleColor())
-            ->font($this->config->theme->getTitleFont())
-            ->size(60)
-            ->box($this->mountArea()->box->width(), 400)
-            ->position(
-                x: 0,
-                y: 0,
-                relativeTo: function() {
-                    if ($url = $this->getFeature('url')) {
-                        return $url->anchor(Position::BottomLeft)
-                            ->moveY(25);
-                    }
-
-                    return $this->mountArea()
-                        ->anchor()
-                        ->moveY(20);
-                }
-            )
-        );
-
-        if ($description = $this->description()) {
-            $this->addFeature((new TextBox())
-                ->name('description')
-                ->text($description)
-                ->color($this->config->theme->getDescriptionColor())
-                ->font($this->config->theme->getDescriptionFont())
-                ->size(40)
-                ->box($this->mountArea()->box->width(), 240)
+        if ($picture = $this->picture()) {
+            $this->addFeature((new PictureBox())
+                ->path($picture)
+                ->box($this->width / 2, $this->height)
                 ->position(
                     x: 0,
-                    y: 50,
-                    relativeTo: fn() => $this->getFeature('title')->anchor(Position::BottomLeft),
+                    y: 0,
                 )
             );
         }
 
+        $this->addFeature((new TextBox())
+            ->text($this->title())
+            ->color($this->config->theme->getTitleColor())
+            ->font($this->config->theme->getTitleFont())
+            ->size(56)
+            ->box($this->mountArea()->box->width() / 2, 400)
+            ->position(
+                x: 0,
+                y: 0,
+                relativeTo: function () {
+                    if ($url = $this->getFeature('url')) {
+                        return $url->anchor(Position::BottomLeft)
+                            ->moveY(40);
+                    }
+
+                    return $this->mountArea()
+                        ->anchor(Position::MiddleTop)
+                        ->moveX(40)
+                        ->moveY(20);
+                },
+            )
+        );
+
         if ($callToAction = $this->callToAction()) {
             $this->addFeature((new TextBox())
+                ->name('call_to_action')
                 ->text($callToAction)
                 ->color($this->config->theme->getCallToActionColor())
                 ->font($this->config->theme->getCallToActionFont())
-                ->size(20)
-                ->box($this->mountArea()->box->width(), 240)
+                ->size(36)
+                ->box($this->mountArea()->box->width() / 2, 100)
                 ->position(
                     x: 0,
-                    y: 20,
-                    relativeTo: function() {
-                        $feature = $this->getFeature('description') ?? $this->getFeature('title');
-                        return $feature->anchor();
-                    }
+                    y: 0,
+                    relativeTo: fn() => $this->mountArea()->anchor(Position::BottomRight),
+                    anchor: Position::BottomRight,
                 )
             );
         }
@@ -83,21 +78,16 @@ class Standard extends AbstractLayout
                 ->size(28)
                 ->box($this->mountArea()->box->width(), 45)
                 ->position(
-                    x: 0,
+                    x: 40,
                     y: 20,
-                    relativeTo: fn() => $this->mountArea()->anchor(),
+                    relativeTo: fn() => $this->mountArea()->anchor(Position::MiddleTop),
                 )
             );
         }
     }
 
-    // XXX: This feels weird... maybe it should happen in the theme? Or let the content decide?
     public function url(): string
     {
-        if ($url = parent::url()) {
-            return strtoupper($url);
-        }
-
-        return '';
+        return strtoupper(parent::url());
     }
 }
