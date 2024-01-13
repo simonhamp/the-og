@@ -2,13 +2,13 @@
 
 namespace SimonHamp\TheOg\Interfaces;
 
-use Intervention\Image\Colors\Rgb\Color;
+use Intervention\Image\Interfaces\ColorInterface;
 
 interface Theme
 {
     public function accentColor(string $color): self;
 
-    public function getAccentColor(): Color;
+    public function getAccentColor(): ColorInterface;
 
     public function background(Background $background): self;
 
@@ -16,11 +16,11 @@ interface Theme
 
     public function backgroundColor(string $color): self;
 
-    public function getBackgroundColor(): Color;
+    public function getBackgroundColor(): ColorInterface;
 
     public function baseColor(string $color): self;
 
-    public function getBaseColor(): Color;
+    public function getBaseColor(): ColorInterface;
 
     public function baseFont(Font $font): self;
 
@@ -28,15 +28,15 @@ interface Theme
 
     public function borderColor(string $color): self;
 
-    public function getBorderColor(): Color;
+    public function getBorderColor(): ColorInterface;
 
     public function callToActionBackgroundColor(string $color): self;
 
-    public function getCallToActionBackgroundColor(): Color;
+    public function getCallToActionBackgroundColor(): ColorInterface;
 
     public function callToActionColor(string $color): self;
 
-    public function getCallToActionColor(): Color;
+    public function getCallToActionColor(): ColorInterface;
 
     public function callToActionFont(Font $font): self;
 
@@ -44,7 +44,7 @@ interface Theme
 
     public function descriptionColor(string $color): self;
 
-    public function getDescriptionColor(): Color;
+    public function getDescriptionColor(): ColorInterface;
 
     public function descriptionFont(Font $font): self;
 
@@ -52,7 +52,7 @@ interface Theme
 
     public function titleColor(string $color): self;
 
-    public function getTitleColor(): Color;
+    public function getTitleColor(): ColorInterface;
 
     public function titleFont(Font $font): self;
 
@@ -60,7 +60,7 @@ interface Theme
 
     public function urlColor(string $color): self;
 
-    public function getUrlColor(): Color;
+    public function getUrlColor(): ColorInterface;
 
     public function urlFont(Font $font): self;
 

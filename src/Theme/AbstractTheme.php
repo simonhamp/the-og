@@ -3,6 +3,7 @@
 namespace SimonHamp\TheOg\Theme;
 
 use Intervention\Image\Colors\Rgb\Color;
+use Intervention\Image\Interfaces\ColorInterface;
 use SimonHamp\TheOg\Interfaces\Background;
 use SimonHamp\TheOg\Interfaces\Font;
 use SimonHamp\TheOg\Interfaces\Theme;
@@ -35,7 +36,7 @@ abstract class AbstractTheme implements Theme
         return $this;
     }
 
-    public function getAccentColor(): Color
+    public function getAccentColor(): ColorInterface
     {
         return Color::create($this->accentColor);
     }
@@ -57,7 +58,7 @@ abstract class AbstractTheme implements Theme
         return $this;
     }
 
-    public function getBackgroundColor(): Color
+    public function getBackgroundColor(): ColorInterface
     {
         return Color::create($this->backgroundColor);
     }
@@ -68,7 +69,7 @@ abstract class AbstractTheme implements Theme
         return $this;
     }
 
-    public function getBaseColor(): Color
+    public function getBaseColor(): ColorInterface
     {
         return Color::create($this->baseColor);
     }
@@ -91,7 +92,7 @@ abstract class AbstractTheme implements Theme
         return $this;
     }
 
-    public function getBorderColor(): Color
+    public function getBorderColor(): ColorInterface
     {
         return Color::create($this->borderColor ?? $this->accentColor);
     }
@@ -102,7 +103,7 @@ abstract class AbstractTheme implements Theme
         return $this;
     }
 
-    public function getCallToActionBackgroundColor(): Color
+    public function getCallToActionBackgroundColor(): ColorInterface
     {
         return Color::create($this->callToActionBackgroundColor ?? $this->accentColor);
     }
@@ -113,7 +114,7 @@ abstract class AbstractTheme implements Theme
         return $this;
     }
 
-    public function getCallToActionColor(): Color
+    public function getCallToActionColor(): ColorInterface
     {
         return Color::create($this->callToActionColor ?? $this->baseColor);
     }
@@ -135,7 +136,7 @@ abstract class AbstractTheme implements Theme
         return $this;
     }
 
-    public function getDescriptionColor(): Color
+    public function getDescriptionColor(): ColorInterface
     {
         return Color::create($this->descriptionColor ?? $this->baseColor);
     }
@@ -157,7 +158,7 @@ abstract class AbstractTheme implements Theme
         return $this;
     }
 
-    public function getTitleColor(): Color
+    public function getTitleColor(): ColorInterface
     {
         return Color::create($this->titleColor ?? $this->baseColor);
     }
@@ -179,7 +180,7 @@ abstract class AbstractTheme implements Theme
         return $this;
     }
 
-    public function getUrlColor(): Color
+    public function getUrlColor(): ColorInterface
     {
         return Color::create($this->urlColor ?? $this->accentColor);
     }
