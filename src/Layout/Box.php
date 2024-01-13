@@ -132,6 +132,14 @@ readonly class Box implements BoxInterface
         return $this->renderedBox ?? $this->box;
     }
 
+    /**
+     * Get the box that will be rendered without calculating its position on the canvas.
+     */
+    protected function getPrerenderedBox(): ?Rectangle
+    {
+        return null;
+    }
+
     protected function setRenderedBox(Rectangle $box): self
     {
         $this->renderedBox = $box;
