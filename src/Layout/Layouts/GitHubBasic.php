@@ -25,9 +25,17 @@ class GitHubBasic extends AbstractLayout
             ->box($this->mountArea()->box->width(), 400)
             ->position(
                 x: 0,
-                y: 20,
-                relativeTo: fn () => $this->getFeature('url'),
-                position: Position::BottomLeft
+                y: 0,
+                relativeTo: function () {
+                    if ($url = $this->getFeature('url')) {
+                        return $url->anchor(Position::BottomLeft)
+                            ->moveY(20);
+                    }
+
+                    return $this->mountArea()
+                        ->anchor()
+                        ->moveY(20);
+                },
             )
         );
 
@@ -41,8 +49,7 @@ class GitHubBasic extends AbstractLayout
                 ->position(
                     x: 0,
                     y: 50,
-                    relativeTo: fn() => $this->getFeature('title'),
-                    position: Position::BottomLeft
+                    relativeTo: fn() => $this->getFeature('title')->anchor(Position::BottomLeft),
                 )
             );
         }
@@ -57,7 +64,7 @@ class GitHubBasic extends AbstractLayout
                 ->position(
                     x: 0,
                     y: 20,
-                    relativeTo: fn() => $this->getFeature('description')
+                    relativeTo: fn() => $this->getFeature('description')->anchor(),
                 )
             );
         }
@@ -72,7 +79,7 @@ class GitHubBasic extends AbstractLayout
                 ->position(
                     x: 0,
                     y: 20,
-                    relativeTo: fn() => $this->mountArea()
+                    relativeTo: fn() => $this->mountArea()->anchor(),
                 )
             );
         }

@@ -26,8 +26,16 @@ class Standard extends AbstractLayout
             ->position(
                 x: 0,
                 y: 0,
-                relativeTo: fn () => $this->getFeature('url'),
-                position: Position::BottomLeft
+                relativeTo: function() {
+                    if ($url = $this->getFeature('url')) {
+                        return $url->anchor(Position::BottomLeft)
+                            ->moveY(25);
+                    }
+
+                    return $this->mountArea()
+                        ->anchor()
+                        ->moveY(20);
+                }
             )
         );
 
@@ -41,8 +49,7 @@ class Standard extends AbstractLayout
                 ->position(
                     x: 0,
                     y: 50,
-                    relativeTo: fn() => $this->getFeature('title'),
-                    position: Position::BottomLeft
+                    relativeTo: fn() => $this->getFeature('title')->anchor(Position::BottomLeft),
                 )
             );
         }
@@ -57,7 +64,10 @@ class Standard extends AbstractLayout
                 ->position(
                     x: 0,
                     y: 20,
-                    relativeTo: fn() => $this->getFeature('description')
+                    relativeTo: function() {
+                        $feature = $this->getFeature('description') ?? $this->getFeature('title');
+                        return $feature->anchor();
+                    }
                 )
             );
         }
@@ -72,7 +82,7 @@ class Standard extends AbstractLayout
                 ->position(
                     x: 0,
                     y: 20,
-                    relativeTo: fn() => $this->mountArea()
+                    relativeTo: fn() => $this->mountArea()->anchor(),
                 )
             );
         }
