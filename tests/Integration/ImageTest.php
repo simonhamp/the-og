@@ -32,10 +32,16 @@ class ImageTest extends IntegrationTestCase
 
         yield 'basic' => [
             (new Image())
+                ->title('Just a standard og:image for a blog post with a simple title'),
+            'basic',
+        ];
+
+        yield 'more text features' => [
+            (new Image())
                 ->url('https://example.com/blog/some-blog-post-url')
                 ->title('Some blog post title that is quite big and quite long')
                 ->description('Some slightly smaller but potentially much longer subtext. It could be really long so we might need to trim it completely after many words'),
-            'basic',
+            'more-text-features',
         ];
 
         yield 'different theme' => [
