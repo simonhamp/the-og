@@ -101,11 +101,10 @@ class Image
     public function theme(Theme|BuiltInTheme $theme): self
     {
         if ($theme instanceof BuiltInTheme) {
-            $this->theme = $theme->load();
-        } else {
-            $this->theme = $theme;
+            $theme = $theme->load();
         }
 
+        $this->theme = $theme;
         return $this;
     }
 
