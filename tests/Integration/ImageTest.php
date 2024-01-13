@@ -25,6 +25,11 @@ class ImageTest extends IntegrationTestCase
 
     public static function snapshotImages(): iterable
     {
+        yield 'test layout' => [
+            (new Image())->layout(new TestLayout()),
+            'test-layout',
+        ];
+
         yield 'basic' => [
             (new Image())
                 ->url('https://example.com/blog/some-blog-post-url')
