@@ -339,8 +339,6 @@ public function render(ImageInterface $image)
 You should, however, extend the [`Box` class](https://github.com/simonhamp/the-og/blob/main/src/Layout/Box.php) as this
 provides a number of useful conveniences, especially if you want to use relative positioning.
 
-```php
-
 ## Testing
 
 The OG uses PHPUnit with [snapshot testing](https://github.com/spatie/phpunit-snapshot-assertions).
