@@ -68,11 +68,16 @@ abstract class AbstractLayout implements Layout
 
     public function url(): ?string
     {
-        return parse_url($this->config->url, PHP_URL_HOST) ?? $this->config->url ?? null;
+        if (!isset($this->config->url)) {
+            return null;
+        }
+
+        return parse_url($this->config->url, PHP_URL_HOST) ?? $this->config->url;
     }
 
     /**
-     * The area within the canvas that we should be rendering content. This is just a convenience object
+     * The area within the canvas that we should be rendering content. This is just a convenience object to help layout
+     * of other features and is not normally rendered (it's not added to the $features list)
      */
     public function mountArea(): BoxInterface
     {

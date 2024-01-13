@@ -91,8 +91,13 @@ class Standard extends AbstractLayout
         }
     }
 
+    // XXX: This feels weird... maybe it should happen in the theme? Or let the content decide?
     public function url(): string
     {
-        return strtoupper(parent::url());
+        if ($url = parent::url()) {
+            return strtoupper($url);
+        }
+
+        return '';
     }
 }
