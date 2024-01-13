@@ -3,10 +3,13 @@
 namespace Tests\Integration;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use SimonHamp\TheOg\Background;
+use SimonHamp\TheOg\Background as BuiltInBackground;
+use SimonHamp\TheOg\BorderPosition;
 use SimonHamp\TheOg\Image;
 use SimonHamp\TheOg\Layout\Layouts\GitHubBasic;
 use SimonHamp\TheOg\Layout\Layouts\TwoUp;
+use SimonHamp\TheOg\Theme\Background;
+use SimonHamp\TheOg\Theme\BackgroundPlacement;
 use SimonHamp\TheOg\Theme\Theme;
 use Spatie\Snapshots\MatchesSnapshots;
 
@@ -65,8 +68,17 @@ class ImageTest extends IntegrationTestCase
         Some slightly smaller but potentially much longer subtext. It could be really long so we might need to trim it completely after many words.
         TEXT
                 )
-                ->background(Background::JustWaves, 0.2),
+                ->background(BuiltInBackground::JustWaves, 0.2),
             'override-some-elements',
+        ];
+
+        yield 'background stretched to cover' => [
+            (new Image())
+                ->url('https://example.com/blog/some-blog-post-url')
+                ->title('A basic title')
+                ->border(BorderPosition::X)
+                ->background(BuiltInBackground::Bananas, 0.2, BackgroundPlacement::Cover),
+            'background-cover',
         ];
 
         yield 'basic with background url' => [
@@ -74,7 +86,7 @@ class ImageTest extends IntegrationTestCase
                 ->url('https://example.com/blog/some-blog-post-url')
                 ->title('Some blog post title that is quite big and quite long')
                 ->description('Some slightly smaller but potentially much longer subtext. It could be really long so we might need to trim it completely after many words')
-                ->backgroundUrl('https://placehold.co/600x400.png', 0.2),
+                ->background(new Background('https://placehold.co/600x400.png', 0.2)),
             'basic-with-background-url',
         ];
 
@@ -84,7 +96,7 @@ class ImageTest extends IntegrationTestCase
                 ->url('https://example.com/blog/some-blog-post-url')
                 ->title('Some blog post title that is quite big and quite long')
                 ->description('Some slightly smaller but potentially much longer subtext. It could be really long so we might need to trim it completely after many words')
-                ->backgroundUrl('https://placehold.co/600x400.png', 0.2),
+                ->background(new Background('https://placehold.co/600x400.png', 0.2)),
             'different-theme-with-background-url',
         ];
 
@@ -93,7 +105,7 @@ class ImageTest extends IntegrationTestCase
                 ->layout(new GitHubBasic)
                 ->url('username/repo')
                 ->title('An awesome package')
-                ->background(Background::CloudyDay, 0.8),
+                ->background(BuiltInBackground::CloudyDay, 0.8),
             'githubbasic-layout',
         ];
 
@@ -110,7 +122,7 @@ class ImageTest extends IntegrationTestCase
                 ->url('https://my-ecommerce-store.com/')
                 ->title('This layout is great for eCommerce!')
                 ->callToAction('Buy Now →')
-                ->background(Background::CloudyDay, 0.8),
+                ->background(BuiltInBackground::CloudyDay, 0.8),
             'twoup-layout',
         ];
 
