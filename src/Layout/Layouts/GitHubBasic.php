@@ -10,14 +10,19 @@ use SimonHamp\TheOg\Layout\TextBox;
 class GitHubBasic extends AbstractLayout
 {
     protected BorderPosition $borderPosition = BorderPosition::Bottom;
+
     protected int $borderWidth = 25;
+
     protected int $height = 640;
+
     protected int $padding = 20;
+
     protected int $width = 1280;
 
     public function features(): void
     {
-        $this->addFeature('title', (new TextBox())
+        $this->addFeature((new TextBox())
+            ->name('title')
             ->text($this->title())
             ->color($this->config->theme->getTitleColor())
             ->font($this->config->theme->getTitleFont())
@@ -40,7 +45,8 @@ class GitHubBasic extends AbstractLayout
         );
 
         if ($description = $this->description()) {
-            $this->addFeature('description', (new TextBox())
+            $this->addFeature((new TextBox())
+                ->name('description')
                 ->text($description)
                 ->color($this->config->theme->getDescriptionColor())
                 ->font($this->config->theme->getDescriptionFont())
@@ -55,7 +61,7 @@ class GitHubBasic extends AbstractLayout
         }
 
         if ($callToAction = $this->callToAction()) {
-            $this->addFeature('call_to_action', (new TextBox())
+            $this->addFeature((new TextBox())
                 ->text($callToAction)
                 ->color($this->config->theme->getCallToActionColor())
                 ->font($this->config->theme->getCallToActionFont())
@@ -70,7 +76,8 @@ class GitHubBasic extends AbstractLayout
         }
 
         if ($url = $this->url()) {
-            $this->addFeature('url', (new TextBox())
+            $this->addFeature((new TextBox())
+                ->name('url')
                 ->text($url)
                 ->color($this->config->theme->getUrlColor())
                 ->font($this->config->theme->getUrlFont())

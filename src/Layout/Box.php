@@ -13,6 +13,8 @@ readonly class Box implements BoxInterface
 
     public Rectangle $box;
 
+    public string $name;
+
     public Point $position;
 
     /**
@@ -149,5 +151,16 @@ readonly class Box implements BoxInterface
             $position->y(),
             $this->box,
         );
+    }
+
+    public function name(string $name): static
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name ?? null;
     }
 }

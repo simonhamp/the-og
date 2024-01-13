@@ -13,10 +13,15 @@ abstract class AbstractLayout implements Layout
     use RendersFeatures;
 
     protected Border $border;
+
     protected BorderPosition $borderPosition;
+
     protected int $borderWidth;
+
     protected int $height;
+
     protected int $padding;
+
     protected int $width;
 
     /**
@@ -24,14 +29,15 @@ abstract class AbstractLayout implements Layout
      */
     protected array $features = [];
 
-    public function addFeature(string $name, BoxInterface $feature): void
+    public function addFeature(BoxInterface $feature): void
     {
+        $name = $feature->getName() ?? $this->generateFeatureName($feature);
         $this->features[$name] = $feature;
     }
 
-    public function getFeature(string $name): BoxInterface
+    public function getFeature(string $name): ?BoxInterface
     {
-        return $this->features[$name];
+        return $this->features[$name] ?? null;
     }
 
     public function border(Border $border): self
@@ -97,5 +103,10 @@ abstract class AbstractLayout implements Layout
         }
 
         return $this->borderPosition;
+    }
+
+    protected function generateFeatureName(BoxInterface $feature): string
+    {
+        return $feature::class . '_' . (count($this->features) + 1);
     }
 }

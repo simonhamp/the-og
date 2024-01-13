@@ -17,7 +17,8 @@ class Standard extends AbstractLayout
 
     public function features(): void
     {
-        $this->addFeature('title', (new TextBox())
+        $this->addFeature((new TextBox())
+            ->name('title')
             ->text($this->title())
             ->color($this->config->theme->getTitleColor())
             ->font($this->config->theme->getTitleFont())
@@ -40,7 +41,8 @@ class Standard extends AbstractLayout
         );
 
         if ($description = $this->description()) {
-            $this->addFeature('description', (new TextBox())
+            $this->addFeature((new TextBox())
+                ->name('description')
                 ->text($description)
                 ->color($this->config->theme->getDescriptionColor())
                 ->font($this->config->theme->getDescriptionFont())
@@ -55,7 +57,7 @@ class Standard extends AbstractLayout
         }
 
         if ($callToAction = $this->callToAction()) {
-            $this->addFeature('call_to_action', (new TextBox())
+            $this->addFeature((new TextBox())
                 ->text($callToAction)
                 ->color($this->config->theme->getCallToActionColor())
                 ->font($this->config->theme->getCallToActionFont())
@@ -73,7 +75,8 @@ class Standard extends AbstractLayout
         }
 
         if ($url = $this->url()) {
-            $this->addFeature('url', (new TextBox())
+            $this->addFeature((new TextBox())
+                ->name('url')
                 ->text($url)
                 ->color($this->config->theme->getUrlColor())
                 ->font($this->config->theme->getUrlFont())
