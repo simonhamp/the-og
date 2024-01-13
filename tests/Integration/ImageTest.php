@@ -6,6 +6,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use SimonHamp\TheOg\Background;
 use SimonHamp\TheOg\Image;
 use SimonHamp\TheOg\Layout\Layouts\GitHubBasic;
+use SimonHamp\TheOg\Layout\Layouts\TwoUp;
 use SimonHamp\TheOg\Theme\Theme;
 use Spatie\Snapshots\MatchesSnapshots;
 
@@ -94,6 +95,40 @@ class ImageTest extends IntegrationTestCase
                 ->title('An awesome package')
                 ->background(Background::CloudyDay, 0.8),
             'githubbasic-layout',
+        ];
+
+        yield 'twoup layout' => [
+            (new Image())
+                ->layout(new TwoUp)
+                ->accentColor('#cc0000')
+                /**
+                 * Photo by Matthew Hamilton on Unsplash
+                 * @see https://unsplash.com/@thatsmrbio?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash
+                 * @see https://unsplash.com/photos/unpaired-red-adidas-sneaker-pO2bglTMJpo?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash
+                 */
+                ->picture(__DIR__.'/../resources/product.jpg')
+                ->url('https://my-ecommerce-store.com/')
+                ->title('This layout is great for eCommerce!')
+                ->callToAction('Buy Now →')
+                ->background(Background::CloudyDay, 0.8),
+            'twoup-layout',
+        ];
+
+        yield 'twoup dark' => [
+            (new Image())
+                ->layout(new TwoUp)
+                ->theme(Theme::Dark)
+                ->accentColor('#c33')
+                /**
+                 * Photo by Matthew Hamilton on Unsplash
+                 * @see https://unsplash.com/@thatsmrbio?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash
+                 * @see https://unsplash.com/photos/unpaired-red-adidas-sneaker-pO2bglTMJpo?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash
+                 */
+                ->picture(__DIR__.'/../resources/product.jpg')
+                ->url('https://my-ecommerce-store.com/')
+                ->title('This layout is great for eCommerce!')
+                ->callToAction('ONLY $99!'),
+            'twoup-dark',
         ];
     }
 }
