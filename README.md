@@ -105,10 +105,9 @@ use SimonHamp\TheOg\BackgroundPlacement;
     opacity: 0.5,
     placement: BackgroundPlacement::Cover
 );
+```
 
 It also supports custom background images from local or remote sources. Details below, under **Themes**.
-
-```
 
 ### Borders
 
