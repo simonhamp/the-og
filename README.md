@@ -94,7 +94,21 @@ Throughout The OG, colors can be expressed as hex codes, rgba, or HTML named col
 The OG comes with a number of built-in background patterns that you can use to add some texture to your image. You can
 find all of these defined in the [`Background` enum](https://github.com/simonhamp/the-og/blob/main/src/Background.php).
 
-It also supports custom background images from local or remote sources.
+Backgrounds can be set to `Repeat` or `Cover` and have opacity too:
+
+```php
+use SimonHamp\TheOg\Background;
+use SimonHamp\TheOg\BackgroundPlacement;
+
+(new Image)->background(
+    background: Background::JustWaves,
+    opacity: 0.5,
+    placement: BackgroundPlacement::Cover
+);
+
+It also supports custom background images from local or remote sources. Details below, under **Themes**.
+
+```
 
 ### Borders
 
