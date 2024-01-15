@@ -1,6 +1,6 @@
 ![](https://github.com/simonhamp/the-og/blob/main/thumbnail.png?raw=true)
 
-<p style="text-align: center">
+<p class="text-center">
 <a href="https://github.com/simonhamp/the-og/actions"><img src="https://img.shields.io/github/actions/workflow/status/simonhamp/the-og/run-tests.yml?style=for-the-badge&label=tests" alt="Build Status"></a>
 <a href="https://github.com/simonhamp/the-og/releases"><img src="https://img.shields.io/packagist/v/simonhamp/the-og?style=for-the-badge&label=latest" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/simonhamp/the-og/stats"><img src="https://img.shields.io/packagist/dt/simonhamp/the-og?style=for-the-badge&label=installs" alt="Total Downloads"></a>
@@ -18,9 +18,12 @@ make sure it keeps being supported and improved, I'd really appreciate your dona
 
 [Donate now via GitHub Sponsors](https://github.com/sponsors/simonhamp)
 
+If you're using The OG, I'd love to see your creations! Please send me a tweet/toot (@simonhamp, @simonhamp@phpc.social)
+with some links so I can see The OG in the wild.
+
 Thank you 🙏
 
-## Sponsors
+### Sponsors
 
 [Laradir](https://laradir.com/?ref=the-og-github) - Connecting the best Laravel Developers with the best Laravel Teams
 
@@ -45,7 +48,11 @@ use SimonHamp\TheOg\Image;
     ->border()
     ->url('https://example.com/blog/some-blog-post-url')
     ->title('Some blog post title that is quite big and quite long')
-    ->description('Some slightly smaller but potentially much longer subtext. It could be really long so we might need to trim it completely after many words')
+    ->description(<<<'TEXT'
+        Some slightly smaller but potentially much longer subtext. It could be really long so we might need to trim it completely after many words.
+
+        Some slightly smaller but potentially much longer subtext. It could be really long so we might need to trim it completely after many words.
+    TEXT)
     ->background(Background::JustWaves, 0.2)
     ->save(__DIR__.'/test.png');
 ```
@@ -379,6 +386,10 @@ Once done, you can execute the tests:
 I'd really appreciate and welcome any PRs to help improve this package!
 
 <!-- Please see [CONTRIBUTING](CONTRIBUTING.md) for details. -->
+
+## Support
+
+All support is handled via [GitHub Issues](https://github.com/simonhamp/the-og/issues).
 
 ## License
 
