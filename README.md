@@ -201,10 +201,12 @@ $image->theme($theme);
 
 #### Fonts
 
-Currently, there is only 1 font available (with 4 variants):
-[`Inter`](https://github.com/simonhamp/the-og/blob/main/src/Theme/Fonts/Inter.php).
+Currently, there are 2 fonts available (each with 4 variants):
+- [`Inter`](https://github.com/simonhamp/the-og/blob/main/src/Theme/Fonts/Inter.php)
+- [`RobotoSlab`](https://github.com/simonhamp/the-og/blob/main/src/Theme/Fonts/Inter.php)
 
-More fonts are coming soon!
+If you think a particular font will make sense added to the core of this package, please consider
+[contributing](#contributing) and open a Pull Request.
 
 #### Custom fonts
 
