@@ -2,33 +2,32 @@
 
 namespace SimonHamp\TheOg\Layout;
 
+use Closure;
 use Intervention\Image\Geometry\Point;
 use Intervention\Image\Geometry\Rectangle;
 use Intervention\Image\Interfaces\ImageInterface;
 use SimonHamp\TheOg\Interfaces\Box as BoxInterface;
 
-readonly class Box implements BoxInterface
+class Box implements BoxInterface
 {
     public Position $anchor;
 
     public Rectangle $box;
 
-    public string $name;
+    public readonly string $name;
 
-    public Point $position;
+    public readonly Rectangle $renderedBox;
+
+    public readonly Point $position;
 
     /**
      * @var Closure<Box>
      */
-    public mixed $relativeTo;
+    public readonly Closure $relativeTo;
 
-    public Position $relativeToPosition;
-
-    public Rectangle $renderedBox;
-
-    public function box(int $width, int $height): self
+    public function box(int|float $width, int|float $height): self
     {
-        $this->box = new Rectangle($width, $height);
+        $this->box = new Rectangle(intval(floor($width)), intval(floor($height)));
         return $this;
     }
 
@@ -39,7 +38,6 @@ readonly class Box implements BoxInterface
         int $x,
         int $y,
         ?callable $relativeTo = null,
-        Position $position = Position::TopLeft,
         Position $anchor = Position::TopLeft
     ): self
     {
@@ -47,7 +45,6 @@ readonly class Box implements BoxInterface
 
         if ($relativeTo) {
             $this->relativeTo = $relativeTo;
-            $this->relativeToPosition = $position;
         }
 
         $this->anchor = $anchor;

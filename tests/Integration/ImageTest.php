@@ -6,6 +6,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use SimonHamp\TheOg\Background as BuiltInBackground;
 use SimonHamp\TheOg\BorderPosition;
 use SimonHamp\TheOg\Image;
+use SimonHamp\TheOg\Layout\Layouts\Avatar;
 use SimonHamp\TheOg\Layout\Layouts\GitHubBasic;
 use SimonHamp\TheOg\Layout\Layouts\TwoUp;
 use SimonHamp\TheOg\Theme;
@@ -169,6 +170,15 @@ class ImageTest extends IntegrationTestCase
                 ->title('The brightest pair of sneakers you ever did see')
                 ->callToAction('ONLY $99!'),
             'twoup-custom-theme',
+        ];
+
+        yield 'avatar layout' => [
+            (new Image())
+                ->layout(new Avatar)
+                ->accentColor('#003')
+                ->picture('https://i.pravatar.cc/300?img=10')
+                ->title('Simone Hampstead'),
+            'avatar-layout',
         ];
     }
 }
