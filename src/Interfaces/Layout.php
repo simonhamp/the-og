@@ -24,4 +24,6 @@ interface Layout
     public function title(): string;
 
     public function url(): ?string;
+
+    public function watermark(): ?string;
 }

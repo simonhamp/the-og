@@ -4,6 +4,7 @@ namespace SimonHamp\TheOg\Layout\Layouts;
 
 use SimonHamp\TheOg\BorderPosition;
 use SimonHamp\TheOg\Layout\AbstractLayout;
+use SimonHamp\TheOg\Layout\PictureBox;
 use SimonHamp\TheOg\Layout\Position;
 use SimonHamp\TheOg\Layout\TextBox;
 
@@ -86,6 +87,19 @@ class Standard extends AbstractLayout
                     x: 0,
                     y: 20,
                     relativeTo: fn() => $this->mountArea()->anchor(),
+                )
+            );
+        }
+
+        if ($watermark = $this->watermark()) {
+            $this->addFeature((new PictureBox())
+                ->path($watermark)
+                ->box(100, 100)
+                ->position(
+                    x: 0,
+                    y: 0,
+                    relativeTo: fn () => $this->mountArea()->anchor(Position::BottomRight),
+                    anchor: Position::BottomRight
                 )
             );
         }
