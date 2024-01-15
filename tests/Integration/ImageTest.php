@@ -52,6 +52,15 @@ class ImageTest extends IntegrationTestCase
             'more-text-features',
         ];
 
+        yield 'with watermark' => [
+            (new Image())
+                ->url('https://example.com/blog/some-blog-post-url')
+                ->title('Some blog post title that is quite big and quite long')
+                ->description('Some slightly smaller but potentially much longer subtext. It could be really long so we might need to trim it completely after many words')
+                ->watermark(__DIR__.'/../resources/logo.png'),
+            'with-watermark',
+        ];
+
         yield 'different theme' => [
             (new Image())
                 ->theme(Theme::Dark)
@@ -109,7 +118,8 @@ class ImageTest extends IntegrationTestCase
                 ->layout(new GitHubBasic)
                 ->url('username/repo')
                 ->title('An awesome package')
-                ->background(BuiltInBackground::CloudyDay, 0.8),
+                ->background(BuiltInBackground::CloudyDay, 0.8)
+                ->watermark(__DIR__.'/../resources/logo.png'),
             'githubbasic-layout',
         ];
 
@@ -126,7 +136,8 @@ class ImageTest extends IntegrationTestCase
                 ->url('https://my-ecommerce-store.com/')
                 ->title('This layout is great for eCommerce!')
                 ->callToAction('Buy Now →')
-                ->background(BuiltInBackground::CloudyDay, 0.8),
+                ->background(BuiltInBackground::CloudyDay, 0.8)
+                ->watermark(__DIR__.'/../resources/logo.png'),
             'twoup-layout',
         ];
 
@@ -177,7 +188,8 @@ class ImageTest extends IntegrationTestCase
                 ->layout(new Avatar)
                 ->accentColor('#003')
                 ->picture('https://i.pravatar.cc/300?img=10')
-                ->title('Simone Hampstead'),
+                ->title('Simone Hampstead')
+                ->watermark(__DIR__.'/../resources/logo.png'),
             'avatar-layout',
         ];
     }

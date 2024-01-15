@@ -67,6 +67,18 @@ class TwoUp extends AbstractLayout
                     anchor: Position::BottomRight,
                 )
             );
+
+            if ($watermark = $this->watermark()) {
+                $this->addFeature((new PictureBox())
+                    ->path($watermark)
+                    ->box(100, 100)
+                    ->position(
+                        x: 20,
+                        y: 610,
+                        anchor: Position::BottomLeft
+                    )
+                );
+            }
         }
 
         if ($url = $this->url()) {

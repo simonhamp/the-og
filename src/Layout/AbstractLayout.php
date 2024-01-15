@@ -75,6 +75,11 @@ abstract class AbstractLayout implements Layout
         return parse_url($this->config->url, PHP_URL_HOST) ?? $this->config->url;
     }
 
+    public function watermark(): ?string
+    {
+        return $this->config->watermark ?? null;
+    }
+
     /**
      * The area within the canvas that we should be rendering content. This is just a convenience object to help layout
      * of other features and is not normally rendered (it's not added to the $features list)
