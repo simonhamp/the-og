@@ -118,7 +118,8 @@ class ImageTest extends IntegrationTestCase
                 ->layout(new GitHubBasic)
                 ->url('username/repo')
                 ->title('An awesome package')
-                ->background(BuiltInBackground::CloudyDay, 0.8),
+                ->background(BuiltInBackground::CloudyDay, 0.8)
+                ->watermark(__DIR__.'/../resources/logo.png'),
             'githubbasic-layout',
         ];
 
@@ -135,7 +136,8 @@ class ImageTest extends IntegrationTestCase
                 ->url('https://my-ecommerce-store.com/')
                 ->title('This layout is great for eCommerce!')
                 ->callToAction('Buy Now →')
-                ->background(BuiltInBackground::CloudyDay, 0.8),
+                ->background(BuiltInBackground::CloudyDay, 0.8)
+                ->watermark(__DIR__.'/../resources/logo.png'),
             'twoup-layout',
         ];
 
@@ -186,7 +188,8 @@ class ImageTest extends IntegrationTestCase
                 ->layout(new Avatar)
                 ->accentColor('#003')
                 ->picture('https://i.pravatar.cc/300?img=10')
-                ->title('Simone Hampstead'),
+                ->title('Simone Hampstead')
+                ->watermark(__DIR__.'/../resources/logo.png'),
             'avatar-layout',
         ];
     }

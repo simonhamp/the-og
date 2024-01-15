@@ -43,6 +43,18 @@ class Avatar extends AbstractLayout
                 anchor: Position::MiddleTop,
             )
         );
+
+        if ($watermark = $this->watermark()) {
+            $this->addFeature((new PictureBox())
+                ->path($watermark)
+                ->box(100, 100)
+                ->position(
+                    x: 1180,
+                    y: 610,
+                    anchor: Position::BottomRight
+                )
+            );
+        }
     }
 
     public function url(): string
