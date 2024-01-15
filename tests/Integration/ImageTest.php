@@ -11,6 +11,9 @@ use SimonHamp\TheOg\Layout\Layouts\TwoUp;
 use SimonHamp\TheOg\Theme;
 use SimonHamp\TheOg\Theme\Background;
 use SimonHamp\TheOg\Theme\BackgroundPlacement;
+use SimonHamp\TheOg\Theme\Fonts\Inter;
+use SimonHamp\TheOg\Theme\Fonts\RobotoSlab;
+use SimonHamp\TheOg\Theme\Theme as BaseTheme;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class ImageTest extends IntegrationTestCase
@@ -141,6 +144,31 @@ class ImageTest extends IntegrationTestCase
                 ->title('This layout is great for eCommerce!')
                 ->callToAction('ONLY $99!'),
             'twoup-dark',
+        ];
+
+        yield 'twoup custom theme' => [
+            (new Image())
+                ->layout(new TwoUp)
+                ->theme(new BaseTheme(
+                    accentColor: 'pink',
+                    baseFont: Inter::regular(),
+                    baseColor: '#333',
+                    backgroundColor: 'white',
+                    background: BuiltInBackground::GridMe->load(),
+                    callToActionFont: Inter::black(),
+                    titleFont: RobotoSlab::black()
+                ))
+                ->accentColor('#c33')
+                /**
+                 * Photo by Matthew Hamilton on Unsplash
+                 * @see https://unsplash.com/@thatsmrbio?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash
+                 * @see https://unsplash.com/photos/unpaired-red-adidas-sneaker-pO2bglTMJpo?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash
+                 */
+                ->picture(__DIR__.'/../resources/product.jpg')
+                ->url('https://my-sneaker-store.com/')
+                ->title('The brightest pair of sneakers you ever did see')
+                ->callToAction('ONLY $99!'),
+            'twoup-custom-theme',
         ];
     }
 }
