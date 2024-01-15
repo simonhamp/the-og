@@ -46,8 +46,6 @@ use Intervention\Image\Interfaces\ImageInterface;
         $base->setImageMatte(true);
 
         $base->compositeImage($mask, Imagick::COMPOSITE_DSTIN, 0, 0);
-
-        $base->writeImage(__DIR__.'/../../circle.png');
     }
 
     public function circle(): static
