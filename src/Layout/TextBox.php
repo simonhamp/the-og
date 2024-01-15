@@ -5,8 +5,8 @@ namespace SimonHamp\TheOg\Layout;
 use Intervention\Image\Geometry\Point;
 use Intervention\Image\Geometry\Polygon;
 use Intervention\Image\Geometry\Rectangle;
-use Intervention\Image\Colors\Rgb\Color;
 use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
+use Intervention\Image\Interfaces\ColorInterface;
 use Intervention\Image\Interfaces\ImageInterface;
 use Intervention\Image\Modifiers\TextModifier;
 use Intervention\Image\Typography\FontFactory;
@@ -16,7 +16,7 @@ use SimonHamp\TheOg\Modifiers\TextModifier as CustomTextModifier;
 
 readonly class TextBox extends Box
 {
-    public Color $color;
+    public ColorInterface $color;
     public Font $font;
     public string $hAlign;
     public int $lineHeight;
@@ -24,7 +24,7 @@ readonly class TextBox extends Box
     public string $text;
     public string $vAlign;
 
-    public function color(Color $color): self
+    public function color(ColorInterface $color): self
     {
         $this->color = $color;
         return $this;
