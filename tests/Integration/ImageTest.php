@@ -52,6 +52,15 @@ class ImageTest extends IntegrationTestCase
             'more-text-features',
         ];
 
+        yield 'with watermark' => [
+            (new Image())
+                ->url('https://example.com/blog/some-blog-post-url')
+                ->title('Some blog post title that is quite big and quite long')
+                ->description('Some slightly smaller but potentially much longer subtext. It could be really long so we might need to trim it completely after many words')
+                ->watermark(__DIR__.'/../resources/logo.png'),
+            'with-watermark',
+        ];
+
         yield 'different theme' => [
             (new Image())
                 ->theme(Theme::Dark)
