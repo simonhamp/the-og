@@ -14,7 +14,7 @@ use Intervention\Image\Typography\TextBlock;
 use SimonHamp\TheOg\Interfaces\Font;
 use SimonHamp\TheOg\Modifiers\TextModifier as CustomTextModifier;
 
-readonly class TextBox extends Box
+class TextBox extends Box
 {
     public ColorInterface $color;
     public Font $font;
