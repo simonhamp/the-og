@@ -2,17 +2,17 @@
 
 namespace SimonHamp\TheOg;
 
-use Intervention\Image\Image as RenderedImage;
 use Intervention\Image\Colors\Rgb\Color;
 use Intervention\Image\Encoders\PngEncoder;
+use Intervention\Image\Image as RenderedImage;
 use Intervention\Image\Interfaces\EncoderInterface;
 use SimonHamp\TheOg\Background as BuiltInBackground;
 use SimonHamp\TheOg\Interfaces\Background;
 use SimonHamp\TheOg\Interfaces\Layout;
 use SimonHamp\TheOg\Interfaces\Theme;
 use SimonHamp\TheOg\Layout\Layouts\Standard;
+use SimonHamp\TheOg\Theme as BuiltInTheme;
 use SimonHamp\TheOg\Theme\BackgroundPlacement;
-use SimonHamp\TheOg\Theme\Theme as BuiltInTheme;
 
 class Image
 {

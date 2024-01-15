@@ -8,9 +8,9 @@ use SimonHamp\TheOg\BorderPosition;
 use SimonHamp\TheOg\Image;
 use SimonHamp\TheOg\Layout\Layouts\GitHubBasic;
 use SimonHamp\TheOg\Layout\Layouts\TwoUp;
+use SimonHamp\TheOg\Theme;
 use SimonHamp\TheOg\Theme\Background;
 use SimonHamp\TheOg\Theme\BackgroundPlacement;
-use SimonHamp\TheOg\Theme\Theme;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class ImageTest extends IntegrationTestCase

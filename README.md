@@ -163,7 +163,7 @@ The default theme is `Light`.
 You can set the theme on your image at any point before it's rendered:
 
 ```php
-use SimonHamp\TheOg\Theme\Theme;
+use SimonHamp\TheOg\Theme;
 
 $image = new Image;
 $image->theme(Theme::Dark);
@@ -174,14 +174,14 @@ $image->theme(Theme::Dark);
 Themes are simple classes that implement the
 [`Theme` interface](https://github.com/simonhamp/the-og/blob/main/src/Interfaces/Theme.php).
 
-However, you can create your own theme most easily by simply extending the
-[`AbstractTheme` class](https://github.com/simonhamp/the-og/blob/main/src/Theme/AbstractTheme.php).
+However, you can create your own theme most easily by simply instantiating the
+[`Theme` class](https://github.com/simonhamp/the-og/blob/main/src/Theme/Theme.php).
 
 You can even do this with an anonymous class to save creating a whole new file:
 
 ```php
 use SimonHamp\TheOg\Theme\Fonts\Inter;
-use SimonHamp\TheOg\Theme\AbstractTheme;
+use SimonHamp\TheOg\Theme\Theme;
 
 $theme = new class(
     accentColor: '#247BA0',
@@ -193,7 +193,7 @@ $theme = new class(
     descriptionColor: '#429EA6',
     descriptionFont: Inter::light(),
     titleFont: Inter::black(),
-) extends AbstractTheme {};
+) extends Theme {};
 
 $image = new Image;
 $image->theme($theme);
@@ -228,9 +228,9 @@ Then you can load this font when defining your theme:
 ```php
 $font = new CustomFont;
 
-$theme = new class(
+$theme = new Theme(
     baseFont: $font,
-) extends AbstractTheme {};
+);
 ```
 
 #### Custom background images
@@ -247,9 +247,9 @@ $background = new Background('/path/to/your/image.png');
 Then you can pass the background to your custom theme, or directly to your image:
 
 ```php
-$theme = new class(
+$theme = new Theme(
     background: $background,
-) extends AbstractTheme {};
+);
 
 $image = (new Image)->theme($theme);
 
@@ -274,8 +274,8 @@ $image->backgroundColor('seagreen')
 
 ### Layouts
 
-While themes govern the _colors_ and _styles_ used within your images, layouts govern size of your images and the
-_size_ and _position_ of the image's elements (text blocks, other images etc.), called **Features**.
+While themes govern the _colors_ and _styles_ used within your images, layouts govern the _size of your images_ and the
+_size_ and _position_ of the image's elements (text blocks, other images etc.), called **features**.
 
 Different layouts provide different features.
 
