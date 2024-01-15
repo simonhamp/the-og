@@ -9,6 +9,7 @@ enum Background: string
 {
     case Bananas = 'bananas.webp';
     case CloudyDay = 'cloudy-day.png';
+    case GridMe = 'gridme.webp';
     case JustWaves = 'just-waves.webp';
 
     public function load(): BackgroundInterface

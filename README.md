@@ -114,7 +114,8 @@ use SimonHamp\TheOg\BackgroundPlacement;
 );
 ```
 
-It also supports custom background images from local or remote sources. Details below, under **Themes**.
+It also supports custom background images from local or remote sources.
+See the [Custom Background Images](#custom-background-images) section below.
 
 ### Borders
 
