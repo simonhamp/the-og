@@ -7,15 +7,18 @@ use ImagickDraw;
 use ImagickPixel;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Interfaces\ImageInterface;
+use SimonHamp\TheOg\Theme\PicturePlacement;
 
- class PictureBox extends Box
+class PictureBox extends Box
 {
-    public string $path;
-
     /**
      * @var array<callable<Imagick>>
      */
     public array $maskQueue;
+
+    public string $path;
+
+    public PicturePlacement $placement = PicturePlacement::Natural;
 
     protected ImageInterface $picture;
 
@@ -71,16 +74,28 @@ use Intervention\Image\Interfaces\ImageInterface;
         return $this;
     }
 
-    public function path(string $path): self
+    public function path(string $path): static
     {
         $this->path = $path;
         return $this;
     }
 
+    public function placement(PicturePlacement $placement): static
+    {
+        $this->placement = $placement;
+        return $this;
+    }
+
     protected function getPicture(): ImageInterface
     {
-        return $this->picture ??= ImageManager::imagick()
-            ->read(file_get_contents($this->path))
-            ->cover($this->box->width(), $this->box->height());
+        $this->picture ??= ImageManager::imagick()
+            ->read(file_get_contents($this->path));
+
+        match ($this->placement) {
+            PicturePlacement::Cover => $this->picture->cover($this->box->width(), $this->box->height()),
+            PicturePlacement::Natural => $this->picture->scaleDown(min($this->box->width(), $this->box->height())),
+        };
+
+        return $this->picture;
     }
 }
