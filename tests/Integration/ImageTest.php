@@ -189,7 +189,7 @@ class ImageTest extends IntegrationTestCase
                 ->accentColor('#003')
                 ->picture('https://i.pravatar.cc/300?img=10')
                 ->title('Simone Hampstead')
-                ->watermark(__DIR__.'/../resources/logo.png'),
+                ->watermark(__DIR__.'/../resources/wide-logo.png'),
             'avatar-layout',
         ];
     }

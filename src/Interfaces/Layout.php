@@ -6,6 +6,7 @@ use Intervention\Image\Image;
 use SimonHamp\TheOg\Border;
 use SimonHamp\TheOg\Image as Config;
 use SimonHamp\TheOg\Layout\TextBox;
+use SimonHamp\TheOg\Theme\Picture;
 
 interface Layout
 {
@@ -17,7 +18,7 @@ interface Layout
 
     public function features(): void;
 
-    public function picture(): ?string;
+    public function picture(): ?Picture;
 
     public function render(Config $config): Image;
 
@@ -25,5 +26,5 @@ interface Layout
 
     public function url(): ?string;
 
-    public function watermark(): ?string;
+    public function watermark(): ?Picture;
 }

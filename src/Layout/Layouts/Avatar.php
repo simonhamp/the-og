@@ -19,7 +19,7 @@ class Avatar extends AbstractLayout
     public function features(): void
     {
         $this->addFeature((new PictureBox())
-            ->path($this->picture())
+            ->path($this->picture()->path())
             ->circle()
             ->box(300, 300)
             ->position(
@@ -46,11 +46,11 @@ class Avatar extends AbstractLayout
 
         if ($watermark = $this->watermark()) {
             $this->addFeature((new PictureBox())
-                ->path($watermark)
-                ->box(100, 100)
+                ->path($watermark->path())
+                ->box(150, 150)
                 ->position(
-                    x: 1180,
-                    y: 610,
+                    x: 1150,
+                    y: 580,
                     anchor: Position::BottomRight
                 )
             );

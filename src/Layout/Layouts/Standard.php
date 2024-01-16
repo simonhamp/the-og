@@ -93,7 +93,7 @@ class Standard extends AbstractLayout
 
         if ($watermark = $this->watermark()) {
             $this->addFeature((new PictureBox())
-                ->path($watermark)
+                ->path($watermark->path())
                 ->box(100, 100)
                 ->position(
                     x: 0,
