@@ -21,7 +21,7 @@ make sure it keeps being supported and improved, I'd really appreciate your dona
 If you're using The OG, I'd love to see your creations! Please send me a tweet/toot
 ([@simonhamp](https://twitter.com/simonhamp),
 [@simonhamp@phpc.social](https://phpc.social/@simonhamp))
-with some links so I can see how youre using The OG in the wild.
+with some links so I can see how you're using The OG in the wild.
 
 Thank you 🙏
 
@@ -96,7 +96,7 @@ local disk first.
 
 #### Image formats
 
-By default, The OG will store encode images in the PNG format.
+By default, The OG encodes images in **PNG format**.
 
 If tou wish to use a different format, however, you can! Simply
 pass an instance of the relevant
