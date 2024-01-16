@@ -98,7 +98,7 @@ local disk first.
 
 By default, The OG encodes images in **PNG format**.
 
-If tou wish to use a different format, however, you can! Simply
+If you wish to use a different format, however, you can! Simply
 pass an instance of the relevant
 [`intervention/image` encoder](https://github.com/Intervention/image/tree/develop/src/Encoders)
 to the `save()` or `toString()` methods:
