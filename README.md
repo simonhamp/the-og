@@ -18,8 +18,10 @@ make sure it keeps being supported and improved, I'd really appreciate your dona
 
 [Donate now via GitHub Sponsors](https://github.com/sponsors/simonhamp)
 
-If you're using The OG, I'd love to see your creations! Please send me a tweet/toot (@simonhamp, @simonhamp@phpc.social)
-with some links so I can see The OG in the wild.
+If you're using The OG, I'd love to see your creations! Please send me a tweet/toot
+([@simonhamp](https://twitter.com/simonhamp),
+[@simonhamp@phpc.social](https://phpc.social/@simonhamp))
+with some links so I can see how youre using The OG in the wild.
 
 Thank you 🙏
 
@@ -91,6 +93,22 @@ $service->putObject([
 
 This will send the raw binary data directly to the external service without needing to write the image to a file on the
 local disk first.
+
+#### Image formats
+
+By default, The OG will store encode images in the PNG format.
+
+If tou wish to use a different format, however, you can! Simply
+pass an instance of the relevant
+[`intervention/image` encoder](https://github.com/Intervention/image/tree/develop/src/Encoders)
+to the `save()` or `toString()` methods:
+
+
+```php
+use Intervention\Image\Encoders\WebpEncoder;
+
+$image->toString(encoder: new WebpEncoder);
+```
 
 ### Colors
 
