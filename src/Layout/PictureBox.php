@@ -5,6 +5,7 @@ namespace SimonHamp\TheOg\Layout;
 use Imagick;
 use ImagickDraw;
 use ImagickPixel;
+use Intervention\Image\Geometry\Rectangle;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Interfaces\ImageInterface;
 use SimonHamp\TheOg\Theme\PicturePlacement;
@@ -97,5 +98,10 @@ class PictureBox extends Box
         };
 
         return $this->picture;
+    }
+
+    protected function getPrerenderedBox(): Rectangle|null
+    {
+        return $this->getPicture()->size();
     }
 }

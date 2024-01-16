@@ -47,10 +47,10 @@ class Avatar extends AbstractLayout
         if ($watermark = $this->watermark()) {
             $this->addFeature((new PictureBox())
                 ->path($watermark->path())
-                ->box(100, 100)
+                ->box(150, 150)
                 ->position(
-                    x: 1180,
-                    y: 610,
+                    x: 1150,
+                    y: 580,
                     anchor: Position::BottomRight
                 )
             );
