@@ -7,6 +7,7 @@ use SimonHamp\TheOg\Layout\AbstractLayout;
 use SimonHamp\TheOg\Layout\PictureBox;
 use SimonHamp\TheOg\Layout\Position;
 use SimonHamp\TheOg\Layout\TextBox;
+use SimonHamp\TheOg\Theme\PicturePlacement;
 
 class TwoUp extends AbstractLayout
 {
@@ -20,7 +21,8 @@ class TwoUp extends AbstractLayout
     {
         if ($picture = $this->picture()) {
             $this->addFeature((new PictureBox())
-                ->path($picture)
+                ->path($picture->path())
+                ->placement($picture->placement() ?? PicturePlacement::Cover)
                 ->box($this->width / 2, $this->height)
                 ->position(
                     x: 0,
@@ -70,7 +72,7 @@ class TwoUp extends AbstractLayout
 
             if ($watermark = $this->watermark()) {
                 $this->addFeature((new PictureBox())
-                    ->path($watermark)
+                    ->path($watermark->path())
                     ->box(100, 100)
                     ->position(
                         x: 20,

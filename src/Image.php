@@ -13,6 +13,7 @@ use SimonHamp\TheOg\Interfaces\Theme;
 use SimonHamp\TheOg\Layout\Layouts\Standard;
 use SimonHamp\TheOg\Theme as BuiltInTheme;
 use SimonHamp\TheOg\Theme\BackgroundPlacement;
+use SimonHamp\TheOg\Theme\Picture;
 
 class Image
 {
@@ -22,11 +23,11 @@ class Image
 
     public readonly string $callToAction;
     public readonly string $description;
-    public readonly string $picture;
+    public readonly Picture $picture;
     public readonly string $title;
 
     public readonly string $url;
-    public readonly string $watermark;
+    public readonly Picture $watermark;
 
     public function __construct()
     {
@@ -55,8 +56,12 @@ class Image
     /**
      * The picture to display
      */
-    public function picture(string $picture): self
+    public function picture(string|Picture $picture): self
     {
+        if (is_string($picture)) {
+            $picture = new Picture($picture);
+        }
+
         $this->picture = $picture;
         return $this;
     }
@@ -82,8 +87,12 @@ class Image
     /**
      * The watermark image
      */
-    public function watermark(string $watermark, ?float $opacity = 1.0): self
+    public function watermark(string|Picture $watermark): self
     {
+        if (is_string($watermark)) {
+            $watermark = new Picture($watermark);
+        }
+
         $this->watermark = $watermark;
         return $this;
     }

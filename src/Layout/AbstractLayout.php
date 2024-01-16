@@ -6,6 +6,7 @@ use SimonHamp\TheOg\Border;
 use SimonHamp\TheOg\BorderPosition;
 use SimonHamp\TheOg\Interfaces\Box as BoxInterface;
 use SimonHamp\TheOg\Interfaces\Layout;
+use SimonHamp\TheOg\Theme\Picture;
 use SimonHamp\TheOg\Traits\RendersFeatures;
 
 abstract class AbstractLayout implements Layout
@@ -56,7 +57,7 @@ abstract class AbstractLayout implements Layout
         return $this->config->description ?? null;
     }
 
-    public function picture(): ?string
+    public function picture(): ?Picture
     {
         return $this->config->picture ?? null;
     }
@@ -75,7 +76,7 @@ abstract class AbstractLayout implements Layout
         return parse_url($this->config->url, PHP_URL_HOST) ?? $this->config->url;
     }
 
-    public function watermark(): ?string
+    public function watermark(): ?Picture
     {
         return $this->config->watermark ?? null;
     }
