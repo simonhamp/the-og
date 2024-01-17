@@ -55,7 +55,7 @@ class PictureBox extends Box
     public function circle(): static
     {
         $this->maskQueue[] = function () {
-            $width = $this->box->width();
+            $width = $this->getPrerenderedBox()->width();
             $start = intval(floor($width / 2));
 
             // Create the circle

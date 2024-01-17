@@ -192,5 +192,14 @@ class ImageTest extends IntegrationTestCase
                 ->watermark(__DIR__.'/../resources/wide-logo.png'),
             'avatar-layout',
         ];
+
+        yield 'avatar too small' => [
+            (new Image())
+                ->layout(new Avatar)
+                ->accentColor('#003')
+                ->picture('https://i.pravatar.cc/200?img=10')
+                ->title('Simone Hampstead'),
+            'avatar-too-small',
+        ];
     }
 }
