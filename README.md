@@ -66,6 +66,10 @@ And here's the image that generates:
 The [`Image` class](https://github.com/simonhamp/the-og/blob/main/src/Image.php) provides an elegant and fluent API for
 configuring the content, style and layout of your image, as well as helpers to render the image and save it to a file.
 
+### Checking your images
+
+Want to see how your images will look when shared on social media? Check out [SEOToolkit's Social Share preview](https://seotoolkit.dev/social)
+
 ### Storing images
 
 Conveniently, you can use the `save()` method to store your image on the local filesystem:
