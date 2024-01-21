@@ -198,15 +198,13 @@ Themes are simple classes that implement the
 [`Theme` interface](https://github.com/simonhamp/the-og/blob/main/src/Interfaces/Theme.php).
 
 However, you can create your own theme most easily by simply instantiating the
-[`Theme` class](https://github.com/simonhamp/the-og/blob/main/src/Theme/Theme.php).
-
-You can even do this with an anonymous class to save creating a whole new file:
+[`Theme` class](https://github.com/simonhamp/the-og/blob/main/src/Theme/Theme.php):
 
 ```php
 use SimonHamp\TheOg\Theme\Fonts\Inter;
 use SimonHamp\TheOg\Theme\Theme;
 
-$theme = new class(
+$theme = new Theme(
     accentColor: '#247BA0',
     backgroundColor: '#ECEBE4',
     baseColor: '#153B50',
@@ -216,7 +214,7 @@ $theme = new class(
     descriptionColor: '#429EA6',
     descriptionFont: Inter::light(),
     titleFont: Inter::black(),
-) extends Theme {};
+);
 
 $image = new Image;
 $image->theme($theme);
