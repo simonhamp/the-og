@@ -5,7 +5,7 @@
     "require": {
         "php": "^8.2",
         "ext-imagick": "*",
-        "intervention/image": "^3.1"
+        "intervention/image": "^3.1.0"
     },
     "license": "MIT",
     "autoload": {
