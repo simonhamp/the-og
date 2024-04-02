@@ -25,7 +25,7 @@ with some links so I can see how you're using The OG in the wild.
 
 Thank you 🙏
 
-### Sponsors
+## Sponsors
 
 [Laradir](https://laradir.com/?ref=the-og-github) - Connecting the best Laravel Developers with the best Laravel Teams
 
