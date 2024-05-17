@@ -27,7 +27,13 @@ Thank you 🙏
 
 ## Sponsors
 
+![](https://avatars.githubusercontent.com/u/126668604?s=50&v=4)
+
 [Laradir](https://laradir.com/?ref=the-og-github) - Connecting the best Laravel Developers with the best Laravel Teams
+
+![](https://avatars.githubusercontent.com/u/12368817?s=50&v=4)
+
+[quantumweb](https://quantumweb.co/?ref=simonhamp/the-og-github) - A bare-metal web agency. Less layers, better results
 
 ## Installation
 
