@@ -30,11 +30,12 @@ trait RendersFeatures
             $this->renderBackground();
         }
 
+        // Prep this layout's feature stack
+        $this->features();
+
         // Loop over the stack of features and render each to the canvas
         // The order of the items in the stack will determine the order in which they are rendered and thus their
         // 'layering' on the canvas: earlier elements will be rendered 'underneath' later elements.
-        $this->features();
-
         foreach ($this->features as $feature) {
             $feature->render($this->canvas);
         }
