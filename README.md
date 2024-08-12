@@ -245,7 +245,7 @@ use SimonHamp\TheOg\Interfaces\Font;
 
 class CustomFont implements Font
 {
-    public function path(string $path): string
+    public function path(): string
     {
         return '/path/to/your/font/source/file.ttf';
     }
