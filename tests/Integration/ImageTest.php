@@ -201,5 +201,12 @@ class ImageTest extends IntegrationTestCase
                 ->title('Simone Hampstead'),
             'avatar-too-small',
         ];
+
+        yield 'tricky title truncation' => [
+            (new Image())
+                ->layout(new GitHubBasic)
+                ->title('Adding Unique Field to MySQL Table With Existing Records'),
+            'tricky-title-truncation',
+        ];
     }
 }
