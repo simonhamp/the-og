@@ -131,7 +131,9 @@ class TextBox extends Box
         $text = $this->text;
         $renderedBox = $this->getRenderedBoxForText($text, $modifier);
 
-        while (! $this->doesTextFitInBox($renderedBox)) {
+        $attempts = 0;
+
+        while (! $this->doesTextFitInBox($renderedBox) && $attempts < 10) {
             if ($renderedBox->width() > $this->box->width()) {
                 $text = wordwrap($text, intval(floor($this->box->width() / ($modifier->boxSize('M')->width() / 1.8))));
                 $renderedBox = $this->getRenderedBoxForText($text, $modifier);
@@ -150,6 +152,8 @@ class TextBox extends Box
             }
 
             $modifier = $this->generateModifier($text, $modifier->position);
+
+            $attempts++;
         }
 
         return $renderedBox;
