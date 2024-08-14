@@ -8,6 +8,7 @@ use Intervention\Image\Geometry\Rectangle;
 use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
 use Intervention\Image\Interfaces\ColorInterface;
 use Intervention\Image\Interfaces\ImageInterface;
+use Intervention\Image\Interfaces\SpecializedInterface;
 use Intervention\Image\Modifiers\TextModifier;
 use Intervention\Image\Typography\FontFactory;
 use Intervention\Image\Typography\TextBlock;
@@ -78,7 +79,7 @@ class TextBox extends Box
         return $this->getFinalTextBox($modifier);
     }
 
-    protected function generateModifier(string $text, Point $position = new Point()): CustomTextModifier
+    protected function generateModifier(string $text, Point $position = new Point()): SpecializedInterface
     {
         return CustomTextModifier::buildSpecialized(
             new TextModifier(
@@ -131,7 +132,9 @@ class TextBox extends Box
         $text = $this->text;
         $renderedBox = $this->getRenderedBoxForText($text, $modifier);
 
-        while (! $this->doesTextFitInBox($renderedBox)) {
+        $attempts = 0;
+
+        while (! $this->doesTextFitInBox($renderedBox) && $attempts < 10) {
             if ($renderedBox->width() > $this->box->width()) {
                 $text = wordwrap($text, intval(floor($this->box->width() / ($modifier->boxSize('M')->width() / 1.8))));
                 $renderedBox = $this->getRenderedBoxForText($text, $modifier);
@@ -150,6 +153,8 @@ class TextBox extends Box
             }
 
             $modifier = $this->generateModifier($text, $modifier->position);
+
+            $attempts++;
         }
 
         return $renderedBox;
