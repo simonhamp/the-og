@@ -27,10 +27,10 @@ Thank you 🙏
 
 ## Sponsors
 
-[Laradir](https://laradir.com/?ref=the-og-github) - Connecting the best Laravel Developers with the best Laravel Teams.
-[quantumweb](https://quantumweb.co/?ref=simonhamp/the-og-github) - A bare-metal web agency. Less layers, better results.
-[RedGalaxy](https://www.redgalaxy.co.uk) - A web application development studio based in Cambridgeshire, building solutions to help businesses improve efficiency and profitability.
-[Sevalla](https://sevalla.com/?utm_source=nativephp&utm_medium=Referral&utm_campaign=homepage) - Host and manage your applications, databases, and static sites in a single, intuitive platform.
+[Laradir](https://laradir.com/?ref=the-og-github) - Connecting the best Laravel Developers with the best Laravel Teams.  
+[quantumweb](https://quantumweb.co/?ref=simonhamp/the-og-github) - A bare-metal web agency. Less layers, better results.  
+[RedGalaxy](https://www.redgalaxy.co.uk) - A web application development studio based in Cambridgeshire, building solutions to help businesses improve efficiency and profitability.  
+[Sevalla](https://sevalla.com/?utm_source=nativephp&utm_medium=Referral&utm_campaign=homepage) - Host and manage your applications, databases, and static sites in a single, intuitive platform.  
 
 ## Installation
 
