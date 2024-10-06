@@ -94,7 +94,7 @@ class PictureBox extends Box
 
         match ($this->placement) {
             PicturePlacement::Cover => $this->picture->cover($this->box->width(), $this->box->height()),
-            PicturePlacement::Natural => $this->picture->scaleDown(min($this->box->width(), $this->box->height())),
+            PicturePlacement::Natural => $this->picture->scaleDown($this->box->width(), $this->box->height()),
         };
 
         return $this->picture;

@@ -208,5 +208,18 @@ class ImageTest extends IntegrationTestCase
                 ->title('Adding Unique Field to MySQL Table With Existing Records'),
             'tricky-title-truncation',
         ];
+
+        yield 'very wide image' => [
+            (new Image())
+                ->layout(
+                    (new ShiftLayout)
+                        ->setCategory('Testing')
+                        ->setReadTime(11)
+                )
+                ->title('A Simple Title')
+                ->url('https://shifty.com/')
+                ->watermark(__DIR__.'/../resources/logo.png'),
+            'very-wide-image',
+        ];
     }
 }
