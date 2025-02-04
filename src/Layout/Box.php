@@ -5,20 +5,24 @@ namespace SimonHamp\TheOg\Layout;
 use Closure;
 use Intervention\Image\Geometry\Point;
 use Intervention\Image\Geometry\Rectangle;
-use Intervention\Image\Interfaces\ImageInterface;
+use Intervention\Image\Interfaces\SizeInterface;
+use InvalidArgumentException;
 use SimonHamp\TheOg\Interfaces\Box as BoxInterface;
+use SimonHamp\TheOg\Layout\Concerns\InteractsWithCanvas;
 
 class Box implements BoxInterface
 {
+    use InteractsWithCanvas;
+
     public Position $anchor;
 
     public Rectangle $box;
 
-    public readonly string $name;
+    public string $name;
 
-    public readonly Rectangle $renderedBox;
+    public Rectangle $renderedBox;
 
-    public readonly Point $position;
+    public Point $position;
 
     /**
      * @var Closure<Box>
@@ -28,19 +32,24 @@ class Box implements BoxInterface
     public function box(int|float $width, int|float $height): self
     {
         $this->box = new Rectangle(intval(floor($width)), intval(floor($height)));
+
         return $this;
     }
 
     /**
-     * Where this box should be rendered on the canvas
+     * Where this box should be rendered on the canvas.
+     *
+     * @param int       $x
+     * @param int       $y
+     * @param ?callable $relativeTo
+     * @param Position  $anchor
      */
     public function position(
         int $x,
         int $y,
         ?callable $relativeTo = null,
-        Position $anchor = Position::TopLeft
-    ): self
-    {
+        Position $anchor = Position::TopLeft,
+    ): self {
         $this->position = new Point($x, $y);
 
         if ($relativeTo) {
@@ -59,7 +68,7 @@ class Box implements BoxInterface
 
             if (! $origin instanceof Point) {
                 // new Point()
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     'The relativeTo callback must return an instance of '.Point::class
                 );
             }
@@ -77,6 +86,9 @@ class Box implements BoxInterface
 
     /**
      * Get the absolute Point on the canvas for a given anchor position on the current box.
+     *
+     * @param ?Position $position
+     * @param mixed     $driver
      */
     public function anchor(?Position $position = null): Point
     {
@@ -93,57 +105,47 @@ class Box implements BoxInterface
 
     protected function anchorOffset(?Position $position = null): Point
     {
-        if (! $position) {
+        if (is_null($position)) {
             $position = $this->anchor;
         }
 
-        // We can check pre-rendered boxes here because we know that we don't need the absolute position of the box yet
-        $box = $this->getPrerenderedBox() ?? $this->getRenderedBox();
+        $dimensions = $this->dimensions();
 
         $coordinates = match ($position) {
-            Position::BottomLeft => [0, $box->height()],
-            Position::BottomRight => [$box->width(), $box->height()],
+            Position::BottomLeft => [0, $dimensions->height()],
+            Position::BottomRight => [$dimensions->width(), $dimensions->height()],
             Position::Center => [
-                intval(floor($box->width() / 2)),
-                intval(floor($box->height() / 2))
+                intval(floor($dimensions->width() / 2)),
+                intval(floor($dimensions->height() / 2)),
             ],
             Position::MiddleBottom => [
-                intval(floor($box->width() / 2)),
-                $box->height()
+                intval(floor($dimensions->width() / 2)),
+                $dimensions->height(),
             ],
-            Position::MiddleLeft => [0, intval(floor($box->height() / 2))],
+            Position::MiddleLeft => [0, intval(floor($dimensions->height() / 2))],
             Position::MiddleRight => [
-                $box->width(),
-                intval(floor($box->height() / 2))
+                $dimensions->width(),
+                intval(floor($dimensions->height() / 2)),
             ],
-            Position::MiddleTop => [intval(floor($box->width() / 2)), 0],
+            Position::MiddleTop => [intval(floor($dimensions->width() / 2)), 0],
             Position::TopLeft => [0, 0],
-            Position::TopRight => [$box->width(), 0]
+            Position::TopRight => [$dimensions->width(), 0],
         };
 
         return new Point(...$coordinates);
     }
 
-    protected function getRenderedBox(): Rectangle
-    {
-        return $this->renderedBox ?? $this->box;
-    }
-
     /**
      * Get the box that will be rendered without calculating its position on the canvas.
+     *
+     * @return SizeInterface
      */
-    protected function getPrerenderedBox(): ?Rectangle
+    public function dimensions(): SizeInterface
     {
-        return null;
+        return $this->box;
     }
 
-    protected function setRenderedBox(Rectangle $box): self
-    {
-        $this->renderedBox = $box;
-        return $this;
-    }
-
-    public function render(ImageInterface $image): void
+    public function render(): void
     {
         $position = $this->calculatePosition();
 
@@ -151,7 +153,7 @@ class Box implements BoxInterface
         $this->box->setBorder('red');
         $this->box->setPivot($position);
 
-        $image->drawRectangle(
+        $this->canvas()->drawRectangle(
             $position->x(),
             $position->y(),
             $this->box,
@@ -161,6 +163,7 @@ class Box implements BoxInterface
     public function name(string $name): static
     {
         $this->name = $name;
+
         return $this;
     }
 

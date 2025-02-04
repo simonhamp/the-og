@@ -33,7 +33,8 @@ abstract class AbstractLayout implements Layout
     public function addFeature(BoxInterface $feature): void
     {
         $name = $feature->getName() ?? $this->generateFeatureName($feature);
-        $this->features[$name] = $feature;
+
+        $this->features[$name] = $feature->setCanvas($this->canvas);
     }
 
     public function getFeature(string $name): ?BoxInterface
@@ -44,6 +45,7 @@ abstract class AbstractLayout implements Layout
     public function border(Border $border): self
     {
         $this->border = $border;
+
         return $this;
     }
 
@@ -69,7 +71,7 @@ abstract class AbstractLayout implements Layout
 
     public function url(): ?string
     {
-        if (!isset($this->config->url)) {
+        if (! isset($this->config->url)) {
             return null;
         }
 
@@ -83,11 +85,11 @@ abstract class AbstractLayout implements Layout
 
     /**
      * The area within the canvas that we should be rendering content. This is just a convenience object to help layout
-     * of other features and is not normally rendered (it's not added to the $features list)
+     * of other features and is not normally rendered (it's not added to the $features list).
      */
     public function mountArea(): BoxInterface
     {
-        return (new Box)
+        return (new Box())
             ->box(
                 $this->width - (($this->padding + $this->getBorderWidth()) * 2),
                 $this->height - (($this->padding + $this->getBorderWidth()) * 2)
@@ -118,6 +120,6 @@ abstract class AbstractLayout implements Layout
 
     protected function generateFeatureName(BoxInterface $feature): string
     {
-        return $feature::class . '_' . (count($this->features) + 1);
+        return $feature::class.'_'.(count($this->features) + 1);
     }
 }

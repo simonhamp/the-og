@@ -5,6 +5,7 @@ namespace SimonHamp\TheOg\Traits;
 use Imagick;
 use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
+use InvalidArgumentException;
 use SimonHamp\TheOg\Border;
 use SimonHamp\TheOg\BorderPosition;
 use SimonHamp\TheOg\Image as Config;
@@ -37,7 +38,7 @@ trait RendersFeatures
         // The order of the items in the stack will determine the order in which they are rendered and thus their
         // 'layering' on the canvas: earlier elements will be rendered 'underneath' later elements.
         foreach ($this->features as $feature) {
-            $feature->render($this->canvas);
+            $feature->render();
         }
 
         if (! isset($this->border)) {
@@ -57,7 +58,7 @@ trait RendersFeatures
     protected function renderBorder(): void
     {
         match ($this->border->getPosition()) {
-            BorderPosition::All => $this->renderBorderLeft() || $this->renderBorderRight()  || $this->renderBorderTop() || $this->renderBorderBottom(),
+            BorderPosition::All => $this->renderBorderLeft() || $this->renderBorderRight() || $this->renderBorderTop() || $this->renderBorderBottom(),
             BorderPosition::Bottom => $this->renderBorderBottom(),
             BorderPosition::Left => $this->renderBorderLeft(),
             BorderPosition::Right => $this->renderBorderRight(),
@@ -113,7 +114,7 @@ trait RendersFeatures
     }
 
     /**
-     * Repeats the supplied background image across the canvas
+     * Repeats the supplied background image across the canvas.
      */
     protected function renderBackground(): void
     {
@@ -124,8 +125,8 @@ trait RendersFeatures
         if ($background->isUrl()) {
             $imageInfo = @getimagesize($path);
 
-            if (!$imageInfo) {
-                throw new \InvalidArgumentException('Background URL provided is invalid');
+            if (! $imageInfo) {
+                throw new InvalidArgumentException('Background URL provided is invalid');
             }
 
             $data = file_get_contents($path);
@@ -171,15 +172,17 @@ trait RendersFeatures
                     offset_y: $filledRows * $height,
                 );
 
-                $filledColumns++;
+                ++$filledColumns;
             }
 
-            $filledRows++;
+            ++$filledRows;
         }
     }
 
     /**
-     * Resizes the background image to cover the canvas
+     * Resizes the background image to cover the canvas.
+     *
+     * @param Image $panel
      */
     protected function renderBackgroundCover(Image $panel): void
     {
