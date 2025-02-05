@@ -3,6 +3,8 @@
 namespace SimonHamp\TheOg\Layout\Concerns;
 
 use Intervention\Image\Interfaces\ColorInterface;
+use Intervention\Image\Interfaces\FontInterface;
+use Intervention\Image\Typography\FontFactory;
 use SimonHamp\TheOg\Interfaces\Font;
 
 trait HasText
@@ -46,5 +48,24 @@ trait HasText
         $this->text = $text;
 
         return $this;
+    }
+
+    protected function interventionFontInstance(): FontInterface
+    {
+        return (new FontFactory(function (FontFactory $factory) {
+            $factory->filename($this->font->path());
+            $factory->size($this->size);
+            $factory->color($this->color);
+
+            if (isset($this->hAlign)) {
+                $factory->align($this->hAlign);
+            }
+
+            $factory->valign($this->vAlign ?? 'top');
+
+            $factory->lineHeight($this->lineHeight ?? 1.6);
+
+            $factory->wrap($this->box->width());
+        }))();
     }
 }

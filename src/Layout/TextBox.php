@@ -4,125 +4,94 @@ namespace SimonHamp\TheOg\Layout;
 
 use Intervention\Image\Geometry\Point;
 use Intervention\Image\Geometry\Rectangle;
-use Intervention\Image\Interfaces\FontInterface;
 use Intervention\Image\Interfaces\ModifierInterface;
 use Intervention\Image\Interfaces\SizeInterface;
 use Intervention\Image\Modifiers\TextModifier;
-use Intervention\Image\Typography\FontFactory;
+use Intervention\Image\Typography\Line;
 use Intervention\Image\Typography\TextBlock;
 use SimonHamp\TheOg\Layout\Concerns\HasAlignment;
 use SimonHamp\TheOg\Layout\Concerns\HasText;
-use SimonHamp\TheOg\Modifiers\TextModifier as CustomTextModifier;
 
 class TextBox extends Box
 {
     use HasText;
     use HasAlignment;
 
+    protected ?ModifierInterface $modifier = null;
+
     public function render(): void
     {
         $modifier = $this->modifier($this->text);
         $modifier->position = $this->calculatePosition();
 
-        $this->canvas()->modify($modifier);
+        $this->canvas()->modify(
+            $this->truncateText($modifier)
+        );
     }
 
     public function dimensions(): SizeInterface
     {
         $driver = $this->canvas()->driver();
+        $modifier = $this->modifier($this->text);
+        $wrappedTextBlock = $this->wrappedTextBlockForModifier($modifier);
 
-        $modifier = $this->modifier($this->text, new Point());
-
-        $font = $modifier->font;
-        $block = $driver->fontProcessor()->textBlock($this->text, $modifier->font, new Point());
-
+        // Create a bounding box, see: https://github.com/Intervention/image/blob/develop/src/Drivers/AbstractFontProcessor.php#L166
         return new Rectangle(
-            $driver->fontProcessor()->boxSize((string) $block->longestLine(), $font)->width(),
-            $driver->fontProcessor()->leading($modifier->font) * ($block->count() - 1) + $driver->fontProcessor()->capHeight($modifier->font)
+            $driver->fontProcessor()->boxSize((string) $wrappedTextBlock->longestLine(), $modifier->font)->width(),
+            $driver->fontProcessor()->leading($modifier->font) * ($wrappedTextBlock->count() - 1) + $driver->fontProcessor()->capHeight($modifier->font)
         );
-
-        return $driver->fontProcessor()->boxSize($this->text, $modifier->font);
-    }
-
-    protected function generateFont(): FontInterface
-    {
-        return (new FontFactory(function (FontFactory $factory) {
-            $factory->filename($this->font->path());
-            $factory->size($this->size);
-            $factory->color($this->color);
-
-            if (isset($this->hAlign)) {
-                $factory->align($this->hAlign);
-            }
-
-            $factory->valign($this->vAlign ?? 'top');
-
-            $factory->lineHeight($this->lineHeight ?? 1.6);
-
-            $factory->wrap($this->box->width());
-        }))();
     }
 
     public function modifier(string $text): ModifierInterface
     {
-        return new TextModifier(
+        if (! is_null($this->modifier)) {
+            return $this->modifier;
+        }
+
+        $this->modifier = new TextModifier(
             text: $text,
             position: new Point(),
-            font: $this->generateFont()
+            font: $this->interventionFontInstance()
         );
+
+        return $this->modifier;
     }
 
-    protected function getTextBlock(string $text): TextBlock
+    protected function truncateText(ModifierInterface $modifier): ModifierInterface
     {
-        return new TextBlock($text);
-    }
+        $expectedHeight = $this->dimensions()->height();
 
-    protected function ensureTextFitsBox(CustomTextModifier $modifier): CustomTextModifier
-    {
-        $this->getFinalTextBox($modifier);
+        if ($expectedHeight < $this->box->height()) {
+            return $modifier;
+        }
+
+        $wrappedTextBlock = $this->wrappedTextBlockForModifier($modifier);
+
+        $lineHeight = $expectedHeight / $wrappedTextBlock->count();
+        $maxLines = intval(floor($this->box->height() / $lineHeight));
+
+        $truncatedLines = [
+            ...array_slice($wrappedTextBlock->toArray(), 0, $maxLines - 1),
+            $this->applyEllipsis($wrappedTextBlock->getAtPosition($maxLines - 1)),
+        ];
+
+        $modifier->text = implode("\n", $truncatedLines);
 
         return $modifier;
     }
 
-    protected function doesTextFitInBox(Rectangle $renderedBox): bool
+    protected function applyEllipsis(Line $line): Line
     {
-        return true;
-
-        return $renderedBox->fitsInto($this->box);
+        return new Line(
+            substr($line, 0, -3).'...',
+            $line->position()
+        );
     }
 
-    protected function getFinalTextBox(CustomTextModifier &$modifier): Rectangle
+    protected function wrappedTextBlockForModifier(ModifierInterface $modifier): TextBlock
     {
-        dd('hit');
+        $driver = $this->canvas()->driver();
 
-        $text = $this->text;
-        $renderedBox = $this->getRenderedBoxForText($text, $modifier);
-
-        $attempts = 0;
-
-        while (! $this->doesTextFitInBox($renderedBox) && $attempts < 10) {
-            if ($renderedBox->width() > $this->box->width()) {
-                $text = wordwrap($text, intval(floor($this->box->width() / ($modifier->boxSize('M', $this->font)->width() / 1.8))));
-                $renderedBox = $this->getRenderedBoxForText($text, $modifier);
-            }
-
-            if ($renderedBox->height() > $this->box->height()) {
-                $lines = $this->getTextBlock($text);
-
-                if ($lines->count() > 1) {
-                    $take = intval(floor($this->box->height() / $modifier->leadingInPixels()));
-                    $lines = array_slice($lines->map(fn ($line) => (string) $line)->toArray(), 0, $take);
-                    $text = implode("\n", $lines).'...';
-                }
-
-                $renderedBox = $this->getRenderedBoxForText($text, $modifier);
-            }
-
-            $modifier = $this->modifier($text, $modifier->position);
-
-            ++$attempts;
-        }
-
-        return $renderedBox;
+        return $driver->fontProcessor()->textBlock($modifier->text, $modifier->font, new Point());
     }
 }
