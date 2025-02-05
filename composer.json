@@ -1,13 +1,20 @@
 {
     "name": "simonhamp/the-og",
     "description": "OpenGraph Image Generator for PHP",
+    "license": "MIT",
     "type": "library",
     "require": {
         "php": "^8.2",
-        "ext-imagick": "*",
-        "intervention/image": "^3.3.3"
+        "intervention/image": "^3.4.0"
     },
-    "license": "MIT",
+    "require-dev": {
+        "spatie/phpunit-snapshot-assertions": "^5.1.1",
+        "phpunit/phpunit": "^10.5",
+        "spatie/pixelmatch-php": "^1.0"
+    },
+    "suggest": {
+        "ext-imagick": "Required for masking of the picture box."
+    },
     "autoload": {
         "psr-4": {
             "SimonHamp\\TheOg\\": "src/"
@@ -23,10 +30,5 @@
             "name": "Simon Hamp",
             "email": "simon.hamp@me.com"
         }
-    ],
-    "require-dev": {
-        "spatie/phpunit-snapshot-assertions": "^5.1.1",
-        "phpunit/phpunit": "^10.5",
-        "spatie/pixelmatch-php": "^1.0"
-    }
+    ]
 }
