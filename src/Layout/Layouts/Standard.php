@@ -67,7 +67,7 @@ class Standard extends AbstractLayout
                     relativeTo: function () {
                         $feature = $this->getFeature('description') ?? $this->getFeature('title');
 
-                        return $feature->anchor();
+                        return $feature->anchor(Position::BottomLeft);
                     }
                 )
             );
