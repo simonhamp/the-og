@@ -1,6 +1,6 @@
 {
     "name": "simonhamp/the-og",
-    "description": "OpenGraph Image Generator for PHP",
+    "description": "A minimalist OpenGraph Image Generator for PHP",
     "license": "MIT",
     "type": "library",
     "require": {
