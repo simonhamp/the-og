@@ -5,9 +5,9 @@ namespace SimonHamp\TheOg\Layout;
 use Imagick;
 use ImagickDraw;
 use ImagickPixel;
-use Intervention\Image\Geometry\Rectangle;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Interfaces\ImageInterface;
+use Intervention\Image\Interfaces\SizeInterface;
 use SimonHamp\TheOg\Theme\PicturePlacement;
 
 class PictureBox extends Box
@@ -23,7 +23,7 @@ class PictureBox extends Box
 
     protected ImageInterface $picture;
 
-    public function render(ImageInterface $image): void
+    public function render(): void
     {
         if (! empty($this->maskQueue)) {
             foreach ($this->maskQueue as $mask) {
@@ -33,16 +33,18 @@ class PictureBox extends Box
 
         $position = $this->calculatePosition();
 
-        $image->place(
+        $this->canvas()->place(
             element: $this->getPicture(),
             offset_x: $position->x(),
             offset_y: $position->y()
         );
     }
 
-     /**
-      * Apply a mask image to the picture
-      */
+    /**
+     * Apply a mask image to the picture.
+     *
+     * @param Imagick $mask
+     */
     public function mask(Imagick $mask): void
     {
         $base = $this->getPicture()->core()->native();
@@ -55,7 +57,7 @@ class PictureBox extends Box
     public function circle(): static
     {
         $this->maskQueue[] = function () {
-            $width = $this->getPrerenderedBox()->width();
+            $width = $this->dimensions()->width();
             $start = intval(floor($width / 2));
 
             // Create the circle
@@ -78,12 +80,14 @@ class PictureBox extends Box
     public function path(string $path): static
     {
         $this->path = $path;
+
         return $this;
     }
 
     public function placement(PicturePlacement $placement): static
     {
         $this->placement = $placement;
+
         return $this;
     }
 
@@ -100,8 +104,15 @@ class PictureBox extends Box
         return $this->picture;
     }
 
-    protected function getPrerenderedBox(): Rectangle|null
+    /**
+     * Get the box that will be rendered without calculating its position on the canvas.
+     *
+     * @return SizeInterface
+     */
+    public function dimensions(): SizeInterface
     {
+        // Using the picture and its placement we can calculate
+        // the relative dimensions based on the initial box.
         return $this->getPicture()->size();
     }
 }

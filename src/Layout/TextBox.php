@@ -3,160 +3,95 @@
 namespace SimonHamp\TheOg\Layout;
 
 use Intervention\Image\Geometry\Point;
-use Intervention\Image\Geometry\Polygon;
 use Intervention\Image\Geometry\Rectangle;
-use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
-use Intervention\Image\Interfaces\ColorInterface;
-use Intervention\Image\Interfaces\ImageInterface;
-use Intervention\Image\Interfaces\SpecializedInterface;
+use Intervention\Image\Interfaces\ModifierInterface;
+use Intervention\Image\Interfaces\SizeInterface;
 use Intervention\Image\Modifiers\TextModifier;
-use Intervention\Image\Typography\FontFactory;
+use Intervention\Image\Typography\Line;
 use Intervention\Image\Typography\TextBlock;
-use SimonHamp\TheOg\Interfaces\Font;
-use SimonHamp\TheOg\Modifiers\TextModifier as CustomTextModifier;
+use SimonHamp\TheOg\Layout\Concerns\HasAlignment;
+use SimonHamp\TheOg\Layout\Concerns\HasText;
 
 class TextBox extends Box
 {
-    public ColorInterface $color;
-    public Font $font;
-    public string $hAlign;
-    public float $lineHeight;
-    public int $size;
-    public string $text;
-    public string $vAlign;
+    use HasText;
+    use HasAlignment;
 
-    public function color(ColorInterface $color): self
+    protected ?ModifierInterface $modifier = null;
+
+    public function render(): void
     {
-        $this->color = $color;
-        return $this;
-    }
+        $modifier = $this->modifier($this->text);
+        $modifier->position = $this->calculatePosition();
 
-    public function font(Font $font): self
-    {
-        $this->font = $font;
-        return $this;
-    }
-
-    public function hAlign(string $hAlign): self
-    {
-        $this->hAlign = $hAlign;
-        return $this;
-    }
-
-    public function lineHeight(float $lineHeight): self
-    {
-        $this->lineHeight = $lineHeight;
-        return $this;
-    }
-
-    public function size(int $size): self
-    {
-        $this->size = $size;
-        return $this;
-    }
-
-    public function text(string $text): self
-    {
-        $this->text = $text;
-        return $this;
-    }
-
-    public function vAlign(string $vAlign): self
-    {
-        $this->vAlign = $vAlign;
-        return $this;
-    }
-
-    public function render(ImageInterface $image): void
-    {
-        $this->ensureTextFitsBox($this->generateModifier($this->text, $this->calculatePosition()))->apply($image);
-    }
-
-    protected function getPrerenderedBox(): Rectangle
-    {
-        $modifier = $this->generateModifier($this->text);
-
-        return $this->getFinalTextBox($modifier);
-    }
-
-    protected function generateModifier(string $text, Point $position = new Point()): SpecializedInterface
-    {
-        return CustomTextModifier::buildSpecialized(
-            new TextModifier(
-                $text,
-                $position,
-                (new FontFactory(
-                    function(FontFactory $factory) {
-                        $factory->filename($this->font->path());
-                        $factory->size($this->size);
-                        $factory->color($this->color);
-
-                        if (isset($this->hAlign)) {
-                            $factory->align($this->hAlign);
-                        }
-
-                        $factory->valign($this->vAlign ?? 'top');
-
-                        $factory->lineHeight($this->lineHeight ?? 1.6);
-                    }
-                ))()
-            ),
-            new ImagickDriver
+        $this->canvas()->modify(
+            $this->truncateText($modifier)
         );
     }
 
-    protected function doesTextFitInBox(Rectangle $renderedBox): bool
+    public function dimensions(): SizeInterface
     {
-        return $renderedBox->fitsInto($this->box);
+        $driver = $this->canvas()->driver();
+        $modifier = $this->modifier($this->text);
+        $wrappedTextBlock = $this->wrappedTextBlockForModifier($modifier);
+
+        // Create a bounding box, see: https://github.com/Intervention/image/blob/develop/src/Drivers/AbstractFontProcessor.php#L166
+        return new Rectangle(
+            $driver->fontProcessor()->boxSize((string) $wrappedTextBlock->longestLine(), $modifier->font)->width(),
+            $driver->fontProcessor()->leading($modifier->font) * ($wrappedTextBlock->count() - 1) + $driver->fontProcessor()->capHeight($modifier->font)
+        );
     }
 
-    protected function getRenderedBoxForText(string $text, CustomTextModifier $modifier): Rectangle|Polygon
+    public function modifier(string $text): ModifierInterface
     {
-        return $modifier->boundingBox($this->getTextBlock($text));
+        if (! is_null($this->modifier)) {
+            return $this->modifier;
+        }
+
+        $this->modifier = new TextModifier(
+            text: $text,
+            position: new Point(),
+            font: $this->interventionFontInstance()
+        );
+
+        return $this->modifier;
     }
 
-    protected function getTextBlock(string $text): TextBlock
+    protected function truncateText(ModifierInterface $modifier): ModifierInterface
     {
-        return new TextBlock($text);
-    }
+        $expectedHeight = $this->dimensions()->height();
 
-    protected function ensureTextFitsBox(CustomTextModifier $modifier): CustomTextModifier
-    {
-        $this->getFinalTextBox($modifier);
+        if ($expectedHeight < $this->box->height()) {
+            return $modifier;
+        }
+
+        $wrappedTextBlock = $this->wrappedTextBlockForModifier($modifier);
+
+        $lineHeight = $expectedHeight / $wrappedTextBlock->count();
+        $maxLines = intval(floor($this->box->height() / $lineHeight));
+
+        $truncatedLines = [
+            ...array_slice($wrappedTextBlock->toArray(), 0, $maxLines - 1),
+            $this->applyEllipsis($wrappedTextBlock->getAtPosition($maxLines - 1)),
+        ];
+
+        $modifier->text = implode("\n", $truncatedLines);
 
         return $modifier;
     }
 
-    protected function getFinalTextBox(CustomTextModifier &$modifier): Rectangle
+    protected function applyEllipsis(Line $line): Line
     {
-        $text = $this->text;
-        $renderedBox = $this->getRenderedBoxForText($text, $modifier);
+        return new Line(
+            substr($line, 0, -3).'...',
+            $line->position()
+        );
+    }
 
-        $attempts = 0;
+    protected function wrappedTextBlockForModifier(ModifierInterface $modifier): TextBlock
+    {
+        $driver = $this->canvas()->driver();
 
-        while (! $this->doesTextFitInBox($renderedBox) && $attempts < 10) {
-            if ($renderedBox->width() > $this->box->width()) {
-                $text = wordwrap($text, intval(floor($this->box->width() / ($modifier->boxSize('M')->width() / 1.8))));
-                $renderedBox = $this->getRenderedBoxForText($text, $modifier);
-            }
-
-            if ($renderedBox->height() > $this->box->height()) {
-                $lines = $this->getTextBlock($text);
-
-                if ($lines->count() > 1) {
-                    $take = intval(floor($this->box->height() / $modifier->leadingInPixels()));
-                    $lines = array_slice($lines->map(fn($line) => (string) $line)->toArray(), 0, $take);
-                    $text = implode("\n", $lines).'...';
-                }
-
-                $renderedBox = $this->getRenderedBoxForText($text, $modifier);
-            }
-
-            $modifier = $this->generateModifier($text, $modifier->position);
-
-            $attempts++;
-        }
-
-        return $renderedBox;
+        return $driver->fontProcessor()->textBlock($modifier->text, $modifier->font, new Point());
     }
 }
