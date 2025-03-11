@@ -20,7 +20,7 @@ class TextBox extends Box
     public ColorInterface $color;
     public Font $font;
     public string $hAlign;
-    public int $lineHeight;
+    public float $lineHeight;
     public int $size;
     public string $text;
     public string $vAlign;
@@ -43,7 +43,7 @@ class TextBox extends Box
         return $this;
     }
 
-    public function lineHeight(int $lineHeight): self
+    public function lineHeight(float $lineHeight): self
     {
         $this->lineHeight = $lineHeight;
         return $this;
