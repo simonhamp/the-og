@@ -5,9 +5,9 @@ namespace SimonHamp\TheOg\Layout;
 use Imagick;
 use ImagickDraw;
 use ImagickPixel;
-use Intervention\Image\Geometry\Rectangle;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Interfaces\ImageInterface;
+use Intervention\Image\Interfaces\SizeInterface;
 use SimonHamp\TheOg\Theme\PicturePlacement;
 
 class PictureBox extends Box
@@ -57,7 +57,7 @@ class PictureBox extends Box
     public function circle(): static
     {
         $this->maskQueue[] = function () {
-            $width = $this->getPrerenderedBox()->width();
+            $width = $this->dimensions()->width();
             $start = intval(floor($width / 2));
 
             // Create the circle
@@ -104,8 +104,15 @@ class PictureBox extends Box
         return $this->picture;
     }
 
-    protected function getPrerenderedBox(): ?Rectangle
+    /**
+     * Get the box that will be rendered without calculating its position on the canvas.
+     *
+     * @return SizeInterface
+     */
+    public function dimensions(): SizeInterface
     {
+        // Using the picture and its placement we can calculate
+        // the relative dimensions based on the initial box.
         return $this->getPicture()->size();
     }
 }
