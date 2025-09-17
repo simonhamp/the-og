@@ -173,6 +173,24 @@ class Image
         return $this;
     }
 
+    /**
+     * Override the theme's default description color
+     */
+    public function descriptionColor(string $color): self
+    {
+        $this->theme->descriptionColor($color);
+        return $this;
+    }
+
+    /**
+     * Override the theme's default title color
+     */
+    public function titleColor(string $color): self
+    {
+        $this->theme->titleColor($color);
+        return $this;
+    }
+
     public function render(): RenderedImage
     {
         return $this->layout->render($this);
