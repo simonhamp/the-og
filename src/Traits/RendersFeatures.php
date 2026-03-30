@@ -3,8 +3,12 @@
 namespace SimonHamp\TheOg\Traits;
 
 use Imagick;
-use Intervention\Image\Image;
+use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
+use Intervention\Image\Geometry\Factories\RectangleFactory;
+use Intervention\Image\Geometry\Rectangle;
 use Intervention\Image\ImageManager;
+use Intervention\Image\Interfaces\ImageInterface;
+use Intervention\Image\Interfaces\ImageManagerInterface;
 use InvalidArgumentException;
 use SimonHamp\TheOg\Border;
 use SimonHamp\TheOg\BorderPosition;
@@ -15,16 +19,16 @@ use SimonHamp\TheOg\Theme\BackgroundPlacement;
 trait RendersFeatures
 {
     protected Config $config;
-    protected Image $canvas;
-    protected ImageManager $manager;
+    protected ImageInterface $canvas;
+    protected ImageManagerInterface $manager;
 
-    public function render(Config $config): Image
+    public function render(Config $config): ImageInterface
     {
         $this->config = $config;
 
-        $this->manager = ImageManager::imagick();
+        $this->manager = ImageManager::usingDriver(ImagickDriver::class);
 
-        $this->canvas = $this->manager->create($this->width, $this->height)
+        $this->canvas = $this->manager->createImage($this->width, $this->height)
             ->fill($this->config->theme->getBackgroundColor());
 
         if ($this->config->theme->getBackground() instanceof Background) {
@@ -71,46 +75,54 @@ trait RendersFeatures
 
     protected function renderBorderLeft(): void
     {
-        $this->canvas->drawRectangle(0, 0, $this->renderVerticalAccentedRectangle());
+        $this->canvas->drawRectangle(
+            $this->verticalAccentedRectangle()->adjust(
+                fn(RectangleFactory $rectangle) => $rectangle->at(0, 0)
+            )
+        );
     }
 
     protected function renderBorderRight(): void
     {
         $this->canvas->drawRectangle(
-            $this->width - $this->border->getWidth(),
-            0,
-            $this->renderVerticalAccentedRectangle()
+            $this->verticalAccentedRectangle()->adjust(
+                fn(RectangleFactory $rectangle) => $rectangle->at($this->width - $this->border->getWidth(), 0)
+            )
         );
     }
 
     protected function renderBorderTop(): void
     {
-        $this->canvas->drawRectangle(0, 0, $this->renderHorizontalAccentedRectangle());
+        $this->canvas->drawRectangle(
+            $this->horizontalAccentedRectangle()->adjust(
+                fn(RectangleFactory $rectangle) => $rectangle->at(0, 0)
+            )
+        );
     }
 
     protected function renderBorderBottom(): void
     {
         $this->canvas->drawRectangle(
-            0,
-            $this->height - $this->border->getWidth(),
-            $this->renderHorizontalAccentedRectangle()
+            $this->horizontalAccentedRectangle()->adjust(
+                fn(RectangleFactory $rectangle) => $rectangle->at(0, $this->height - $this->border->getWidth())
+            )
         );
     }
 
-    protected function renderVerticalAccentedRectangle(): callable
+    protected function verticalAccentedRectangle(): Rectangle
     {
-        return function ($rectangle) {
+        return RectangleFactory::build(function ($rectangle) {
             $rectangle->size($this->border->getWidth(), $this->height);
             $rectangle->background($this->border->getColor());
-        };
+        });
     }
 
-    protected function renderHorizontalAccentedRectangle(): callable
+    protected function horizontalAccentedRectangle(): Rectangle
     {
-        return function ($rectangle) {
+        return RectangleFactory::build(function ($rectangle) {
             $rectangle->size($this->width, $this->border->getWidth());
             $rectangle->background($this->border->getColor());
-        };
+        });
     }
 
     /**
@@ -132,7 +144,7 @@ trait RendersFeatures
             $data = file_get_contents($path);
         }
 
-        $panel = $this->manager->read($data ?? $path);
+        $panel = $this->manager->decode($data ?? $path);
 
         $imagick = $panel->core()->native();
 
@@ -152,7 +164,7 @@ trait RendersFeatures
         };
     }
 
-    protected function renderBackgroundRepeat(Image $panel): void
+    protected function renderBackgroundRepeat(ImageInterface $panel): void
     {
         $width = $panel->width();
         $height = $panel->height();
@@ -166,10 +178,10 @@ trait RendersFeatures
             $filledColumns = 0;
 
             while ($filledColumns <= $columns) {
-                $this->canvas->place(
-                    element: $panel,
-                    offset_x: $filledColumns * $width,
-                    offset_y: $filledRows * $height,
+                $this->canvas->insert(
+                    image: $panel,
+                    x: $filledColumns * $width,
+                    y: $filledRows * $height,
                 );
 
                 ++$filledColumns;
@@ -182,10 +194,10 @@ trait RendersFeatures
     /**
      * Resizes the background image to cover the canvas.
      *
-     * @param Image $panel
+     * @param ImageInterface $panel
      */
-    protected function renderBackgroundCover(Image $panel): void
+    protected function renderBackgroundCover(ImageInterface $panel): void
     {
-        $this->canvas->place($panel->cover($this->width, $this->height));
+        $this->canvas->insert($panel->cover($this->width, $this->height));
     }
 }

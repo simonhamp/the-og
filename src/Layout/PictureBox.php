@@ -5,6 +5,7 @@ namespace SimonHamp\TheOg\Layout;
 use Imagick;
 use ImagickDraw;
 use ImagickPixel;
+use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Interfaces\ImageInterface;
 use Intervention\Image\Interfaces\SizeInterface;
@@ -33,10 +34,10 @@ class PictureBox extends Box
 
         $position = $this->calculatePosition();
 
-        $this->canvas()->place(
-            element: $this->getPicture(),
-            offset_x: $position->x(),
-            offset_y: $position->y()
+        $this->canvas()->insert(
+            image: $this->getPicture(),
+            x: $position->x(),
+            y: $position->y()
         );
     }
 
@@ -93,8 +94,8 @@ class PictureBox extends Box
 
     protected function getPicture(): ImageInterface
     {
-        $this->picture ??= ImageManager::imagick()
-            ->read(file_get_contents($this->path));
+        $this->picture ??= ImageManager::usingDriver(ImagickDriver::class)
+            ->decodeBinary(file_get_contents($this->path));
 
         match ($this->placement) {
             PicturePlacement::Cover => $this->picture->cover($this->box->width(), $this->box->height()),

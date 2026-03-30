@@ -374,7 +374,8 @@ use Intervention\Image\Interfaces\ImageInterface;
 
 public function render(ImageInterface $image)
 {
-  $image->drawCircle(10, 10, function ($circle) {
+  $image->drawCircle(function ($circle) {
+      $circle->at(10, 10);
       $circle->radius(150);
       $circle->background('lightblue');
       $circle->border('b53717', 1);

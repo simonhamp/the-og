@@ -3,10 +3,9 @@
 namespace SimonHamp\TheOg\Layout;
 
 use Intervention\Image\Geometry\Point;
-use Intervention\Image\Geometry\Rectangle;
-use Intervention\Image\Interfaces\ModifierInterface;
 use Intervention\Image\Interfaces\SizeInterface;
 use Intervention\Image\Modifiers\TextModifier;
+use Intervention\Image\Size;
 use Intervention\Image\Typography\Line;
 use Intervention\Image\Typography\TextBlock;
 use SimonHamp\TheOg\Layout\Concerns\HasAlignment;
@@ -17,7 +16,7 @@ class TextBox extends Box
     use HasText;
     use HasAlignment;
 
-    protected ?ModifierInterface $modifier = null;
+    protected ?TextModifier $modifier = null;
 
     public function render(): void
     {
@@ -36,13 +35,13 @@ class TextBox extends Box
         $wrappedTextBlock = $this->wrappedTextBlockForModifier($modifier);
 
         // Create a bounding box, see: https://github.com/Intervention/image/blob/develop/src/Drivers/AbstractFontProcessor.php#L166
-        return new Rectangle(
+        return new Size(
             $driver->fontProcessor()->boxSize((string) $wrappedTextBlock->longestLine(), $modifier->font)->width(),
             $driver->fontProcessor()->leading($modifier->font) * ($wrappedTextBlock->count() - 1) + $driver->fontProcessor()->capHeight($modifier->font)
         );
     }
 
-    public function modifier(string $text): ModifierInterface
+    public function modifier(string $text): TextModifier
     {
         if (! is_null($this->modifier)) {
             return $this->modifier;
@@ -57,7 +56,7 @@ class TextBox extends Box
         return $this->modifier;
     }
 
-    protected function truncateText(ModifierInterface $modifier): ModifierInterface
+    protected function truncateText(TextModifier $modifier): TextModifier
     {
         $expectedHeight = $this->dimensions()->height();
 
@@ -72,7 +71,7 @@ class TextBox extends Box
 
         $truncatedLines = [
             ...array_slice($wrappedTextBlock->toArray(), 0, $maxLines - 1),
-            $this->applyEllipsis($wrappedTextBlock->getAtPosition($maxLines - 1)),
+            $this->applyEllipsis($wrappedTextBlock->at($maxLines - 1)),
         ];
 
         $modifier->text = implode("\n", $truncatedLines);
@@ -88,7 +87,7 @@ class TextBox extends Box
         );
     }
 
-    protected function wrappedTextBlockForModifier(ModifierInterface $modifier): TextBlock
+    protected function wrappedTextBlockForModifier(TextModifier $modifier): TextBlock
     {
         $driver = $this->canvas()->driver();
 

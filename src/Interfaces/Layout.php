@@ -2,10 +2,9 @@
 
 namespace SimonHamp\TheOg\Interfaces;
 
-use Intervention\Image\Image;
+use Intervention\Image\Interfaces\ImageInterface;
 use SimonHamp\TheOg\Border;
 use SimonHamp\TheOg\Image as Config;
-use SimonHamp\TheOg\Layout\TextBox;
 use SimonHamp\TheOg\Theme\Picture;
 
 interface Layout
@@ -20,7 +19,7 @@ interface Layout
 
     public function picture(): ?Picture;
 
-    public function render(Config $config): Image;
+    public function render(Config $config): ImageInterface;
 
     public function title(): string;
 

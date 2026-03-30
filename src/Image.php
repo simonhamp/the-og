@@ -2,7 +2,6 @@
 
 namespace SimonHamp\TheOg;
 
-use Intervention\Image\Colors\Rgb\Color;
 use Intervention\Image\Encoders\PngEncoder;
 use Intervention\Image\Image as RenderedImage;
 use Intervention\Image\Interfaces\EncoderInterface;
@@ -31,7 +30,7 @@ class Image
 
     public function __construct()
     {
-        $this->layout(new Standard);
+        $this->layout(new Standard());
         $this->theme(BuiltInTheme::Light);
     }
 
@@ -161,12 +160,12 @@ class Image
     /**
      * Override the layout's default border
      */
-    public function border(?BorderPosition $position = null, ?Color $color = null, ?int $width = null): self
+    public function border(?BorderPosition $position = null, ?string $color = null, ?int $width = null): self
     {
         $this->layout->border(
             (new Border())
                 ->position($position ?? $this->layout->getBorderPosition())
-                ->color($color ?? $this->theme->getBorderColor())
+                ->color($color ?? $this->theme->getBorderColor()->toString())
                 ->width($width ?? $this->layout->getBorderWidth())
         );
 
@@ -205,7 +204,7 @@ class Image
         return $this;
     }
 
-    public function toString(EncoderInterface $encoder = new PngEncoder): string
+    public function toString(EncoderInterface $encoder = new PngEncoder()): string
     {
         return $this->render()
             ->encode($encoder)

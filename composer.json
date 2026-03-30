@@ -4,8 +4,8 @@
     "license": "MIT",
     "type": "library",
     "require": {
-        "php": "^8.2",
-        "intervention/image": "^3.4.0"
+        "php": "^8.3",
+        "intervention/image": "^4.0"
     },
     "require-dev": {
         "spatie/phpunit-snapshot-assertions": "^5.1.1",
