@@ -2,7 +2,7 @@
 
 namespace SimonHamp\TheOg;
 
-use Intervention\Image\Colors\Rgb\Color;
+use Intervention\Image\Color;
 use Intervention\Image\Interfaces\ColorInterface;
 
 class Border
@@ -11,7 +11,7 @@ class Border
     protected int $width;
     protected string $color;
 
-    public function color(ColorInterface $color): self
+    public function color(string $color): self
     {
         $this->color = $color;
         return $this;
@@ -19,7 +19,7 @@ class Border
 
     public function getColor(): ColorInterface
     {
-        return Color::create($this->color);
+        return Color::parse($this->color);
     }
 
     public function position(BorderPosition $position): self

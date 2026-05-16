@@ -2,7 +2,7 @@
 
 namespace SimonHamp\TheOg\Theme;
 
-use Intervention\Image\Colors\Rgb\Color;
+use Intervention\Image\Color;
 use Intervention\Image\Interfaces\ColorInterface;
 use SimonHamp\TheOg\Interfaces\Background;
 use SimonHamp\TheOg\Interfaces\Font;
@@ -38,7 +38,7 @@ class Theme implements ThemeInterface
 
     public function getAccentColor(): ColorInterface
     {
-        return Color::create($this->accentColor);
+        return Color::parse($this->accentColor);
     }
 
     public function background(Background $background): self
@@ -60,7 +60,7 @@ class Theme implements ThemeInterface
 
     public function getBackgroundColor(): ColorInterface
     {
-        return Color::create($this->backgroundColor);
+        return Color::parse($this->backgroundColor);
     }
 
     public function baseColor(string $color): self
@@ -71,7 +71,7 @@ class Theme implements ThemeInterface
 
     public function getBaseColor(): ColorInterface
     {
-        return Color::create($this->baseColor);
+        return Color::parse($this->baseColor);
     }
 
     public function baseFont(Font $font): self
@@ -94,7 +94,7 @@ class Theme implements ThemeInterface
 
     public function getBorderColor(): ColorInterface
     {
-        return Color::create($this->borderColor ?? $this->accentColor);
+        return Color::parse($this->borderColor ?? $this->accentColor);
     }
 
     public function callToActionBackgroundColor(string $color): self
@@ -105,7 +105,7 @@ class Theme implements ThemeInterface
 
     public function getCallToActionBackgroundColor(): ColorInterface
     {
-        return Color::create($this->callToActionBackgroundColor ?? $this->accentColor);
+        return Color::parse($this->callToActionBackgroundColor ?? $this->accentColor);
     }
 
     public function callToActionColor(string $color): self
@@ -116,7 +116,7 @@ class Theme implements ThemeInterface
 
     public function getCallToActionColor(): ColorInterface
     {
-        return Color::create($this->callToActionColor ?? $this->baseColor);
+        return Color::parse($this->callToActionColor ?? $this->baseColor);
     }
 
     public function callToActionFont(Font $font): self
@@ -138,7 +138,7 @@ class Theme implements ThemeInterface
 
     public function getDescriptionColor(): ColorInterface
     {
-        return Color::create($this->descriptionColor ?? $this->baseColor);
+        return Color::parse($this->descriptionColor ?? $this->baseColor);
     }
 
     public function descriptionFont(Font $font): self
@@ -160,7 +160,7 @@ class Theme implements ThemeInterface
 
     public function getTitleColor(): ColorInterface
     {
-        return Color::create($this->titleColor ?? $this->baseColor);
+        return Color::parse($this->titleColor ?? $this->baseColor);
     }
 
     public function titleFont(Font $font): self
@@ -182,7 +182,7 @@ class Theme implements ThemeInterface
 
     public function getUrlColor(): ColorInterface
     {
-        return Color::create($this->urlColor ?? $this->accentColor);
+        return Color::parse($this->urlColor ?? $this->accentColor);
     }
 
     public function urlFont(Font $font): self

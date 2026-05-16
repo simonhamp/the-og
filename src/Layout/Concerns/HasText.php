@@ -52,20 +52,20 @@ trait HasText
 
     protected function interventionFontInstance(): FontInterface
     {
-        return (new FontFactory(function (FontFactory $factory) {
+        return FontFactory::build(function (FontFactory $factory) {
             $factory->filename($this->font->path());
             $factory->size($this->size);
             $factory->color($this->color);
 
             if (isset($this->hAlign)) {
-                $factory->align($this->hAlign);
+                $factory->align(horizontal: $this->hAlign);
             }
 
-            $factory->valign($this->vAlign ?? 'top');
+            $factory->align(vertical: $this->vAlign ?? 'top');
 
             $factory->lineHeight($this->lineHeight ?? 1.6);
 
             $factory->wrap($this->box->width());
-        }))();
+        });
     }
 }

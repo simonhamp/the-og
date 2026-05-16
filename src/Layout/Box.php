@@ -152,12 +152,9 @@ class Box implements BoxInterface
         $this->box->setBackgroundColor('orange');
         $this->box->setBorder('red');
         $this->box->setPivot($position);
+        $this->box->setPosition($position);
 
-        $this->canvas()->drawRectangle(
-            $position->x(),
-            $position->y(),
-            $this->box,
-        );
+        $this->canvas()->drawRectangle($this->box);
     }
 
     public function name(string $name): static
